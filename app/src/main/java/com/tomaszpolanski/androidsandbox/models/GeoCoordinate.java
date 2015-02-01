@@ -1,7 +1,6 @@
 package com.tomaszpolanski.androidsandbox.models;
 
 import com.tomaszpolanski.androidsandbox.utils.MathUtils;
-import com.tomaszpolanski.androidsandbox.utils.PrimitiveUtils;
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
 import com.tomaszpolanski.androidsandbox.utils.result.Result;
 import com.tomaszpolanski.androidsandbox.utils.result.ResultTuple;
@@ -50,8 +49,8 @@ public final class GeoCoordinate {
                      .map(cString -> cString.split(","))
                      .filter(coordinateStringList -> coordinateStringList.length == 2, list -> "Invalid number of items: " + list.length)
                      .flatMap(coordinateList -> ResultTuple.create(
-                             PrimitiveUtils.parseDoubleToResult(coordinateList[0]),
-                             PrimitiveUtils.parseDoubleToResult(coordinateList[1])))
+                             Result.tryAsResult(() -> Double.parseDouble(coordinateList[0])),
+                             Result.tryAsResult(() -> Double.parseDouble(coordinateList[1]))))
                      .flatMap(tuple -> tuple.map((latitude, longitude) -> GeoCoordinate.create(latitude, longitude))
                                             .asResult("Coordinates out of bounds"));
     }
