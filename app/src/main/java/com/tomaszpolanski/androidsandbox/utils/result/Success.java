@@ -6,6 +6,7 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
+import rx.functions.Func2;
 
 public final class Success<A> extends Result<A> {
 
@@ -63,6 +64,11 @@ public final class Success<A> extends Result<A> {
     @Override
     public <R> R matchResult(Func1<A, R> fSuccess, Func0<R> fFailure) {
         return fSuccess.call(mValue);
+    }
+
+    @Override
+    public <B, C> Result<C> lift(final Result<B> resultB, final Func2<A, B, C> f) {
+        return resultB.map(b -> f.call(mValue, b));
     }
 
     @Override

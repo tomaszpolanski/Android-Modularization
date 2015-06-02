@@ -7,6 +7,7 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
+import rx.functions.Func2;
 
 public final class Failure<A> extends Result<A> {
 
@@ -66,7 +67,10 @@ public final class Failure<A> extends Result<A> {
         return fFailure.call();
     }
 
-
+    @Override
+    public <B, C> Result<C> lift(final Result<B> resultB, final Func2<A, B, C> f) {
+        return (Result<C>)this;
+    }
     @Override
     public String toString() {
         return "Failure: " + getMessage();

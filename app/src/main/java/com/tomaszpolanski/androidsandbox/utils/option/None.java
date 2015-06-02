@@ -6,8 +6,9 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
+import rx.functions.Func2;
 
-public final class None<A> extends com.tomaszpolanski.androidsandbox.utils.option.Option<A> {
+public final class None<A> extends Option<A> {
 
     None() { }
 
@@ -43,7 +44,12 @@ public final class None<A> extends com.tomaszpolanski.androidsandbox.utils.optio
 
     @Override
     public A get() {
-         throw new IllegalStateException();
+        throw new IllegalStateException();
+    }
+
+    @Override
+    public <R> Option<R> ofType(Class<R> type) {
+        return Option.NONE;
     }
 
     @Override
@@ -54,5 +60,15 @@ public final class None<A> extends com.tomaszpolanski.androidsandbox.utils.optio
     @Override
     public <R> R matchResult(final Func1<A, R> fSome, final Func0<R> fNone) {
         return fNone.call();
+    }
+
+    @Override
+    public <B, C> Option<C> lift(final Option<B> optionB, final Func2<A, B, C> f) {
+        return NONE;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
     }
 }

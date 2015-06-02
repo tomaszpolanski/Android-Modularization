@@ -3,7 +3,6 @@ package com.tomaszpolanski.androidsandbox.models;
 import com.tomaszpolanski.androidsandbox.utils.MathUtils;
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
 import com.tomaszpolanski.androidsandbox.utils.result.Result;
-import com.tomaszpolanski.androidsandbox.utils.result.ResultTuple;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -48,11 +47,15 @@ public final class GeoCoordinate {
         return Result.asResult(stringCoordinate)
                      .map(cString -> cString.split(","))
                      .filter(coordinateStringList -> coordinateStringList.length == 2, list -> "Invalid number of items: " + list.length)
-                     .flatMap(coordinateList -> ResultTuple.create(
-                             Result.tryAsResult(() -> Double.parseDouble(coordinateList[0])),
-                             Result.tryAsResult(() -> Double.parseDouble(coordinateList[1]))))
-                     .flatMap(tuple -> tuple.map((latitude, longitude) -> GeoCoordinate.create(latitude, longitude))
-                                            .asResult("Coordinates out of bounds"));
+                     .flatMap(coordinateList -> getDouble(coordinateList[0])
+                                          .lift(getDouble(coordinateList[1]),
+                                                (lat, lng) -> GeoCoordinate.create(lat, lng)
+                                                                .asResult("Coordinates out of bounds")))
+                     .flatMap(Result::id);
+    }
+
+    private static Result<Double> getDouble(final String val) {
+        return Result.tryAsResult(() -> Double.parseDouble(val));
     }
 
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")

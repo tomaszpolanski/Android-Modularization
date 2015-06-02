@@ -6,6 +6,7 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
+import rx.functions.Func2;
 
 public final class Some<A> extends Option<A> {
 
@@ -51,6 +52,11 @@ public final class Some<A> extends Option<A> {
     }
 
     @Override
+    public <R> Option<R> ofType(Class<R> type) {
+        return type.isInstance(mValue) ? Option.asOption(type.cast(mValue)) : Option.NONE;
+    }
+
+    @Override
     public void match(final Action1<A> fSome, final Action0 fNone) {
         fSome.call(mValue);
     }
@@ -61,10 +67,20 @@ public final class Some<A> extends Option<A> {
     }
 
     @Override
+    public <B, C> Option<C> lift(final Option<B> optionB, final Func2<A, B, C> f) {
+        return optionB.map(b -> f.call(mValue, b));
+    }
+
+    @Override
     public boolean equals(final Object o) {
         return Option.asOption(o)
                      .filter(obj -> obj instanceof Some)
                      .map(obj -> (Some) obj)
                      .filter(some -> some.get().equals(mValue)) != Option.NONE;
+    }
+
+    @Override
+    public String toString() {
+        return mValue.toString();
     }
 }

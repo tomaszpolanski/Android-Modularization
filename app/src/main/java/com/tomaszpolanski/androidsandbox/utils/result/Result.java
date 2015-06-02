@@ -9,6 +9,7 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
+import rx.functions.Func2;
 
 public abstract class Result<A> {
 
@@ -67,4 +68,10 @@ public abstract class Result<A> {
     public abstract void match(final Action1<A> fSuccess, final Action0 fFailure);
 
     public abstract <R> R matchResult(final Func1<A, R> fSuccess, final Func0<R> fFailure);
+
+    public abstract  <B,C> Result<C> lift(final Result<B> resultB, Func2<A, B, C> f);
+
+    public Result<A> id() {
+        return this;
+    }
 }
