@@ -25,7 +25,7 @@ public abstract class Option<T> {
     public abstract <OUT> Option<OUT> map(@NonNull final Func1<T, OUT> selector);
 
     @NonNull
-    public abstract <B> Option<B> flatMap(@NonNull final Func1<T, Option<B>> selector);
+    public abstract <OUT> Option<OUT> flatMap(@NonNull final Func1<T, Option<OUT>> selector);
 
     @NonNull
     public abstract Option<T> filter(@NonNull final Predicate<? super T> selector);
@@ -43,7 +43,7 @@ public abstract class Option<T> {
     public abstract <OUT> Option<OUT> ofType(@NonNull final Class<OUT> type);
 
     @NonNull
-    public static <A> Option<A> asOption(@Nullable final A value) {
+    public static <IN> Option<IN> asOption(@Nullable final IN value) {
         return value == null ? Option.NONE : new Some(value);
     }
 

@@ -100,7 +100,7 @@ public final class Some<T> extends Option<T> {
 
     @NonNull
     @Override
-    public Result<T> asResult(@NonNull String message) {
+    public Result<T> asResult(@NonNull final String message) {
         return Result.asResult(mValue);
     }
 
