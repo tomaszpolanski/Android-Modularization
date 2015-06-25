@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import com.android.internal.util.Predicate;
 import com.tomaszpolanski.androidsandbox.utils.result.Result;
 
+import java8.util.stream.Stream;
+import java8.util.stream.StreamSupport;
 import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
@@ -74,7 +76,7 @@ public final class None<T> extends Option<T> {
     @NonNull
     @Override
     public <IN, OUT> Option<OUT> lift(@NonNull final Option<IN> optionB,
-                                        @NonNull final Func2<T, IN, OUT> f) {
+                                      @NonNull final Func2<T, IN, OUT> f) {
         return NONE;
     }
 
@@ -88,14 +90,23 @@ public final class None<T> extends Option<T> {
 
     @NonNull
     @Override
-    public <IN1, IN2, IN3, OUT> Option<OUT> lift(@NonNull Option<IN1> option1, @NonNull Option<IN2> option2, @NonNull Option<IN3> option3, @NonNull Func4<T, IN1, IN2, IN3, OUT> f) {
+    public <IN1, IN2, IN3, OUT> Option<OUT> lift(@NonNull Option<IN1> option1,
+                                                 @NonNull Option<IN2> option2,
+                                                 @NonNull Option<IN3> option3,
+                                                 @NonNull Func4<T, IN1, IN2, IN3, OUT> f) {
         return NONE;
     }
 
     @NonNull
     @Override
-    public Result<T> asResult(@NonNull final String message) {
+    public Result<T> toResult(@NonNull final String message) {
         return Result.failure(message);
+    }
+
+    @NonNull
+    @Override
+    public Stream<T> toStream() {
+        return StreamSupport.empty();
     }
 
     @Override

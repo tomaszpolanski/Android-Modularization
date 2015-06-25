@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import com.android.internal.util.Predicate;
 import com.tomaszpolanski.androidsandbox.utils.result.Result;
 
+import java8.util.stream.Stream;
+import java8.util.stream.StreamSupport;
 import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
@@ -71,13 +73,15 @@ public final class Some<T> extends Option<T> {
 
     @Nullable
     @Override
-    public <OUT> OUT match(@NonNull Func1<T, OUT> fSome, @NonNull Func0<OUT> fNone) {
+    public <OUT> OUT match(@NonNull Func1<T, OUT> fSome,
+                           @NonNull Func0<OUT> fNone) {
         return fSome.call(mValue);
     }
 
     @NonNull
     @Override
-    public <IN, OUT2> Option<OUT2> lift(@NonNull final Option<IN> option, @NonNull final Func2<T, IN, OUT2> f) {
+    public <IN, OUT2> Option<OUT2> lift(@NonNull final Option<IN> option,
+                                        @NonNull final Func2<T, IN, OUT2> f) {
         return option.map(b -> f.call(mValue, b));
     }
 
@@ -100,8 +104,14 @@ public final class Some<T> extends Option<T> {
 
     @NonNull
     @Override
-    public Result<T> asResult(@NonNull final String message) {
+    public Result<T> toResult(@NonNull final String message) {
         return Result.asResult(mValue);
+    }
+
+    @NonNull
+    @Override
+    public Stream<T> toStream() {
+        return StreamSupport.of(mValue);
     }
 
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")

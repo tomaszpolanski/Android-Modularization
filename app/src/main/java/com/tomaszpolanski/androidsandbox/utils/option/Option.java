@@ -7,6 +7,7 @@ import android.util.Log;
 import com.android.internal.util.Predicate;
 import com.tomaszpolanski.androidsandbox.utils.result.Result;
 
+import java8.util.stream.Stream;
 import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
@@ -87,6 +88,9 @@ public abstract class Option<T> {
     }
 
     @NonNull
-    public abstract Result<T> asResult(@NonNull final String message);
+    public abstract Result<T> toResult(@NonNull final String message);
+
+    @NonNull
+    public abstract Stream<T> toStream();
 }
 

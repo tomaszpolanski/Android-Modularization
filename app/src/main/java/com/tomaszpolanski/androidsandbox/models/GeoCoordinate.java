@@ -50,7 +50,7 @@ public final class GeoCoordinate {
                      .flatMap(coordinateList -> getDouble(coordinateList[0])
                                           .lift(getDouble(coordinateList[1]),
                                                 (lat, lng) -> GeoCoordinate.create(lat, lng)
-                                                                .asResult("Coordinates out of bounds")))
+                                                                .toResult("Coordinates out of bounds")))
                      .flatMap(Result::id);
     }
 
