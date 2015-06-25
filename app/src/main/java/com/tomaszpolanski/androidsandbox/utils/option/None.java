@@ -113,4 +113,9 @@ public final class None<T> extends Option<T> {
     public String toString() {
         return getClass().getSimpleName();
     }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
 }

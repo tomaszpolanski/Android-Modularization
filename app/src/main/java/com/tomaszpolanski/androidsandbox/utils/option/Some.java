@@ -102,6 +102,11 @@ public final class Some<T> extends Option<T> {
         return option1.lift(option2, option3, (o1, o2, o3) -> f.call(mValue, o1, o2, o3));
     }
 
+    @Override
+    public int hashCode() {
+        return mValue.hashCode();
+    }
+
     @NonNull
     @Override
     public Result<T> toResult(@NonNull final String message) {
