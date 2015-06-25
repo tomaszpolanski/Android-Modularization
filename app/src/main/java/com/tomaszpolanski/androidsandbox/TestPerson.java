@@ -2,6 +2,7 @@ package com.tomaszpolanski.androidsandbox;
 
 import com.tomaszpolanski.androidsandbox.models.Person;
 import com.tomaszpolanski.androidsandbox.models.PersonDetails;
+import com.tomaszpolanski.androidsandbox.utils.Unit;
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
 
 public class TestPerson {
@@ -14,7 +15,7 @@ public class TestPerson {
         Option<Person> personOption = Person.create(name);
 
         if (personOption != Option.NONE) {
-            Person person = personOption.get();
+            Person person = personOption.getUnsafe();
             print("Person exits: ", person);
         } else {
             System.console().printf("Was not able to create person with name: " + name);
@@ -27,7 +28,7 @@ public class TestPerson {
                                           .filter(personName -> personName.equals("John"));
 
         if (johnOption != Option.NONE) {
-            Person person = johnOption.get();
+            Person person = johnOption.getUnsafe();
             print("Hi John! ", person);
         } else {
             System.console().printf("That's not John: " + name);
@@ -40,8 +41,8 @@ public class TestPerson {
     private static void betterPrintPerson(final String name) {
         Person.create(name)
               .match(
-                      person -> print("Person exits: ", person),
-                      () -> System.console().printf("Was not able to create person with name: " + name));
+                      person -> Unit.asUnit(() ->  print("Person exits: ", person)),
+                      () -> Unit.asUnit(() -> System.console().printf("Was not able to create person with name: " + name)));
     }
 
 

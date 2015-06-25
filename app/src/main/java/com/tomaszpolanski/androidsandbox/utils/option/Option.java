@@ -1,53 +1,54 @@
 package com.tomaszpolanski.androidsandbox.utils.option;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.android.internal.util.Predicate;
 import com.tomaszpolanski.androidsandbox.utils.result.Result;
 
-import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.functions.Func2;
+import rx.functions.Func3;
+import rx.functions.Func4;
 
-public abstract class Option<A> {
+public abstract class Option<T> {
 
+    @NonNull
     public static final None NONE = new None();
 
-    public abstract void iter(final Action1<A> action);
+    public abstract void iter(@NonNull final Action1<T> action);
 
-    public abstract <B> Option<B> map(final Func1<A, B> f);
+    @NonNull
+    public abstract <OUT> Option<OUT> map(@NonNull final Func1<T, OUT> selector);
 
-    public abstract <B> Option<B> flatMap(final Func1<A, Option<B>> f);
+    @NonNull
+    public abstract <B> Option<B> flatMap(@NonNull final Func1<T, Option<B>> selector);
 
-    public abstract Option<A> filter(final Predicate<? super A> predicate);
+    @NonNull
+    public abstract Option<T> filter(@NonNull final Predicate<? super T> selector);
 
-    public abstract Option<A> orOption(final Func0<Option<A>> f);
+    @NonNull
+    public abstract Option<T> orOption(@NonNull final Func0<Option<T>> f);
 
-    public abstract A orDefault(final Func0<A> def);
+    @NonNull
+    public abstract T orDefault(@NonNull final Func0<T> def);
 
-    public Result<A> asResult(final String error) {
-        return Result.asResult(this, error);
+    @NonNull
+    public abstract T getUnsafe();
+
+    @NonNull
+    public abstract <OUT> Option<OUT> ofType(@NonNull final Class<OUT> type);
+
+    @NonNull
+    public static <A> Option<A> asOption(@Nullable final A value) {
+        return value == null ? Option.NONE : new Some(value);
     }
 
-    public abstract A get();
-
-    public static <A> Some<A> some(final A value) {
-        return new Some(value);
-    }
-
-    public static <A> None<A> none() {
-        return NONE;
-    }
-
-    public abstract <R> Option<R> ofType(final Class<R> type);
-
-    public static <A> Option<A> asOption(final A value) {
-        return value == null ? none() : some(value);
-    }
-
-    public static <A> Option<A> tryAsOption(final Func0<A> f) {
+    @NonNull
+    public static <OUT> Option<OUT> tryAsOption(@NonNull final Func0<OUT> f) {
         try {
             return Option.asOption(f.call());
         } catch (Exception e) {
@@ -55,19 +56,37 @@ public abstract class Option<A> {
         }
     }
 
-    public abstract void match( final Action1<A> fSome, final Action0 fNone);
+    @Nullable
+    public abstract <OUT> OUT match(@NonNull final Func1<T, OUT> fSome,
+                                    @NonNull final Func0<OUT> fNone);
 
-    public abstract <R> R matchResult( final Func1<A, R> fSome, final Func0<R> fNone);
-
-    public Option<A> id() {
+    @NonNull
+    public Option<T> id() {
         return this;
     }
 
-    public abstract  <B,C> Option<C> lift(final Option<B> optionB, final Func2<A, B, C> f);
+    @NonNull
+    public abstract  <IN1, OUT> Option<OUT> lift(@NonNull final Option<IN1> option1,
+                                                 @NonNull final Func2<T, IN1, OUT> f);
 
-    public Option<A> log(final String message) {
-        Log.e(message, this.toString());
+    @NonNull
+    public abstract <IN1, IN2, OUT> Option<OUT> lift(@NonNull final Option<IN1> option1,
+                                                     @NonNull final Option<IN2> option2,
+                                                     @NonNull final Func3<T, IN1, IN2, OUT> f);
+
+    @NonNull
+    public abstract <IN1, IN2, IN3, OUT> Option<OUT> lift(@NonNull final Option<IN1> option1,
+                                                          @NonNull final Option<IN2> option2,
+                                                          @NonNull final Option<IN3> option3,
+                                                          @NonNull final Func4<T, IN1, IN2, IN3, OUT> f);
+
+    @NonNull
+    public Option<T> log(@Nullable final String message) {
+        Log.e(message, "" + message);
         return this;
     }
+
+    @NonNull
+    public abstract Result<T> asResult(@NonNull final String message);
 }
 

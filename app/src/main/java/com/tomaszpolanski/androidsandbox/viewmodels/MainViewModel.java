@@ -2,11 +2,6 @@ package com.tomaszpolanski.androidsandbox.viewmodels;
 
 import android.util.Log;
 
-import java.util.concurrent.TimeUnit;
-
-import rx.Observable;
-import rx.subjects.PublishSubject;
-
 public class MainViewModel extends BaseViewModel {
 
 

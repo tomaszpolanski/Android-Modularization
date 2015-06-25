@@ -1,11 +1,9 @@
 package com.tomaszpolanski.androidsandbox.utils;
 
 
-
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -331,7 +329,7 @@ public class Linq<T> extends ArrayList<T> {
      * Returns list of items from the @source that of given @type
      *
      * @param source List to be filtered
-     * @param type   Type of items we want to get from lit @source
+     * @param type   Type of items we want to getUnsafe from lit @source
      * @param <T>    Input type of elements in @source
      * @param <R>    Result type of items
      * @return Filtered list
@@ -343,7 +341,7 @@ public class Linq<T> extends ArrayList<T> {
     /**
      * Non static version of @ofType
      *
-     * @param type Type of items we want to get from lit @source
+     * @param type Type of items we want to getUnsafe from lit @source
      * @param <R>  Result type of items
      * @return Filtered list
      */

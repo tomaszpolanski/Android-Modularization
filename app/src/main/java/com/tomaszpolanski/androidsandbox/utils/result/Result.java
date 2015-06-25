@@ -4,7 +4,6 @@ import com.android.internal.util.Predicate;
 import com.tomaszpolanski.androidsandbox.utils.StringUtils;
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
 
-
 import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func0;
@@ -52,7 +51,7 @@ public abstract class Result<A> {
     }
 
     public static <A> Result<A> asResult(Option<A> value, String failMessage) {
-        return value != Option.NONE ? success(value.get()) : failure(failMessage);
+        return value != Option.NONE ? success(value.getUnsafe()) : failure(failMessage);
     }
 
     public abstract Option<A> asOption();

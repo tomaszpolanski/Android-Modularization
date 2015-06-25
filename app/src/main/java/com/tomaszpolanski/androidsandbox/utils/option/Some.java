@@ -1,82 +1,115 @@
 package com.tomaszpolanski.androidsandbox.utils.option;
 
-import com.android.internal.util.Predicate;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
-import rx.functions.Action0;
+import com.android.internal.util.Predicate;
+import com.tomaszpolanski.androidsandbox.utils.result.Result;
+
 import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.functions.Func2;
+import rx.functions.Func3;
+import rx.functions.Func4;
 
-public final class Some<A> extends Option<A> {
+public final class Some<T> extends Option<T> {
 
-    private final A mValue;
+    @NonNull
+    private final T mValue;
 
-    Some(A value) {
+    Some(@NonNull final T value) {
         mValue = value;
     }
 
     @Override
-    public void iter(final Action1<A> action) {
+    public void iter(@NonNull final Action1<T> action) {
         action.call(mValue);
     }
 
+    @NonNull
     @Override
-    public <B> Option<B> map(final Func1<A, B> f) {
-        return some(f.call(mValue));
+    public <OUT> Option<OUT> map(@NonNull final Func1<T, OUT> f) {
+        return Option.asOption(f.call(mValue));
     }
 
+    @NonNull
     @Override
-    public <B> Option<B> flatMap(final Func1<A, Option<B>> f) {
+    public <OUT> Option<OUT> flatMap(@NonNull final Func1<T, Option<OUT>> f) {
         return f.call(mValue);
     }
 
+    @NonNull
     @Override
-    public Option<A> filter(final Predicate<? super A> predicate) {
+    public Option<T> filter(@NonNull final Predicate<? super T> predicate) {
         return predicate.apply(mValue) ? this : NONE;
     }
 
+    @NonNull
     @Override
-    public Option<A> orOption(final Func0<Option<A>> f) {
+    public Option<T> orOption(@NonNull final Func0<Option<T>> f) {
         return this;
     }
 
+    @NonNull
     @Override
-    public A orDefault(final Func0<A> def) {
+    public T orDefault(@NonNull final Func0<T> def) {
         return mValue;
     }
 
+    @NonNull
     @Override
-    public A get() {
+    public T getUnsafe() {
         return mValue;
     }
 
+    @NonNull
     @Override
-    public <R> Option<R> ofType(Class<R> type) {
+    public <OUT> Option<OUT> ofType(@NonNull Class<OUT> type) {
         return type.isInstance(mValue) ? Option.asOption(type.cast(mValue)) : Option.NONE;
     }
 
+    @Nullable
     @Override
-    public void match(final Action1<A> fSome, final Action0 fNone) {
-        fSome.call(mValue);
-    }
-
-    @Override
-    public <R> R matchResult(final Func1<A, R> fSome, final Func0<R> fNone) {
+    public <OUT> OUT match(@NonNull Func1<T, OUT> fSome, @NonNull Func0<OUT> fNone) {
         return fSome.call(mValue);
     }
 
+    @NonNull
     @Override
-    public <B, C> Option<C> lift(final Option<B> optionB, final Func2<A, B, C> f) {
-        return optionB.map(b -> f.call(mValue, b));
+    public <IN, OUT2> Option<OUT2> lift(@NonNull final Option<IN> option, @NonNull final Func2<T, IN, OUT2> f) {
+        return option.map(b -> f.call(mValue, b));
     }
 
+    @NonNull
+    @Override
+    public <IN1, IN2, OUT> Option<OUT> lift(@NonNull Option<IN1> option1,
+                                            @NonNull Option<IN2> option2,
+                                            @NonNull Func3<T, IN1, IN2, OUT> f) {
+        return option1.lift(option2, (o1, o2) -> f.call(mValue, o1, o2));
+    }
+
+    @NonNull
+    @Override
+    public <IN1, IN2, IN3, OUT> Option<OUT> lift(@NonNull Option<IN1> option1,
+                                                 @NonNull Option<IN2> option2,
+                                                 @NonNull Option<IN3> option3,
+                                                 @NonNull Func4<T, IN1, IN2, IN3, OUT> f) {
+        return option1.lift(option2, option3, (o1, o2, o3) -> f.call(mValue, o1, o2, o3));
+    }
+
+    @NonNull
+    @Override
+    public Result<T> asResult(@NonNull String message) {
+        return Result.asResult(mValue);
+    }
+
+    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(final Object o) {
         return Option.asOption(o)
-                     .filter(obj -> obj instanceof Some)
-                     .map(obj -> (Some) obj)
-                     .filter(some -> some.get().equals(mValue)) != Option.NONE;
+                     .ofType(Some.class)
+                     .filter(some -> some.getUnsafe().equals(mValue)) != Option.NONE;
     }
 
     @Override
