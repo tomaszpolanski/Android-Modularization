@@ -1,6 +1,17 @@
 package com.tomaszpolanski.androidsandbox.viewmodels;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
+
+import java.util.ArrayList;
+
+import java8.util.function.Consumer;
+import java8.util.function.IntSupplier;
+import java8.util.function.IntUnaryOperator;
+import java8.util.function.Supplier;
+import java8.util.stream.IntStreams;
+import java8.util.stream.Stream;
+import java8.util.stream.StreamSupport;
 
 public class MainViewModel extends BaseViewModel {
 
@@ -77,6 +88,16 @@ public class MainViewModel extends BaseViewModel {
 //        subscribe(numbers.subscribe(number -> Log.e("Subscription", "Sub2: " + number)));
 
         //
+
+        final Stream<String> st = getRangedStream();
+        st.forEach(s -> Log.e("QQQ", s));
+    }
+
+    @NonNull
+    private static Stream<String> getRangedStream() {
+        return IntStreams.range(0, 1000)
+                .limit(10)
+                .mapToObj(i -> "" + i);
     }
 
     private static int expensiveOperation(final int number) {
