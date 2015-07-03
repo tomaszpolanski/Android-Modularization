@@ -1,33 +1,39 @@
 package com.tomaszpolanski.androidsandbox.utils.result;
+
+import android.support.annotation.NonNull;
+
 import com.android.internal.util.Predicate;
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
 
-import rx.functions.Action0;
-import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.functions.Func2;
 
 public final class Success<A> extends Result<A> {
 
+    @NonNull
     private final A mValue;
 
-    Success(A value) {
+    Success(@NonNull A value) {
         mValue = value;
     }
 
+    @NonNull
     @Override
-    public <B> Result<B> map(Func1<A, B> f) {
+    public <OUT> Result<OUT> map(@NonNull final Func1<A, OUT> f) {
         return success(f.call(mValue));
     }
 
+    @NonNull
     @Override
-    public <B> Result<B> flatMap(Func1<A, Result<B>> f) {
+    public <OUT> Result<OUT> flatMap(@NonNull final Func1<A, Result<OUT>> f) {
         return f.call(mValue);
     }
 
+    @NonNull
     @Override
-    public Result<A> filter(Predicate<? super A> predicate, Func1<A, String> failMessage) {
+    public Result<A> filter(@NonNull final Predicate<? super A> predicate,
+                            @NonNull final Func1<A, String> failMessage) {
         return predicate.apply(mValue) ? this : failure(failMessage.call(mValue));
     }
 
@@ -36,39 +42,41 @@ public final class Success<A> extends Result<A> {
         return true;
     }
 
+    @NonNull
     @Override
     public String getMessage() {
         throw new IllegalStateException();
     }
 
+    @NonNull
     @Override
-    public A get() {
+    public A getUnsafe() {
         return mValue;
     }
 
+    @NonNull
     @Override
-    public Result<A> or(Func0<Result<A>> f) {
+    public Result<A> or(@NonNull final Func0<Result<A>> f) {
         return this;
     }
 
+    @NonNull
     @Override
     public Option<A> asOption() {
         return Option.asOption(mValue);
     }
 
     @Override
-    public void match(Action1<A> fSuccess, Action0 fFailure) {
-        fSuccess.call(mValue);
-    }
-
-    @Override
-    public <R> R matchResult(Func1<A, R> fSuccess, Func0<R> fFailure) {
+    public <OUT> OUT match(@NonNull final Func1<A, OUT> fSuccess,
+                           @NonNull final Func0<OUT> fFailure) {
         return fSuccess.call(mValue);
     }
 
+    @NonNull
     @Override
-    public <B, C> Result<C> lift(final Result<B> resultB, final Func2<A, B, C> f) {
-        return resultB.map(b -> f.call(mValue, b));
+    public <IN, OUT> Result<OUT> lift(@NonNull final Result<IN> resultIn,
+                                      @NonNull final Func2<A, IN, OUT> f) {
+        return resultIn.map(b -> f.call(mValue, b));
     }
 
     @Override
