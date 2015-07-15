@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
@@ -29,6 +30,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
 }
 
 dependencies {
@@ -36,7 +40,18 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.netflix.rxjava:rxjava-core:0.20.0-RC1'
     compile 'com.netflix.rxjava:rxjava-android:0.20.5'
-    compile 'com.android.support:support-v4:22.2.0'
-    compile 'net.sourceforge.streamsupport:streamsupport:1.2.1'
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
+}
+buildscript {
+    ext.kotlin_version = '0.12.613'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+repositories {
+    mavenCentral()
 }

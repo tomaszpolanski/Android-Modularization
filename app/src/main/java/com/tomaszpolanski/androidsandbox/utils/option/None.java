@@ -6,8 +6,6 @@ import android.support.annotation.Nullable;
 import com.android.internal.util.Predicate;
 import com.tomaszpolanski.androidsandbox.utils.result.Result;
 
-import java8.util.stream.Stream;
-import java8.util.stream.StreamSupport;
 import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
@@ -103,11 +101,6 @@ public final class None<T> extends Option<T> {
         return Result.failure(message);
     }
 
-    @NonNull
-    @Override
-    public Stream<T> toStream() {
-        return StreamSupport.empty();
-    }
 
     @Override
     public String toString() {
