@@ -47,11 +47,16 @@ public final class GeoCoordinate {
         return Result.asResult(stringCoordinate)
                      .map(cString -> cString.split(","))
                      .filter(coordinateStringList -> coordinateStringList.length == 2, list -> "Invalid number of items: " + list.length)
-                     .flatMap(coordinateList -> getDouble(coordinateList[0])
-                                          .lift(getDouble(coordinateList[1]),
-                                                (lat, lng) -> GeoCoordinate.create(lat, lng)
-                                                                .toResult("Coordinates out of bounds")))
-                     .flatMap(Result::id);
+                     .flatMap(coordinateList -> getCoordinate(coordinateList[0], coordinateList[1]));
+    }
+
+    private static Result<GeoCoordinate> getCoordinate(final String latitudeString,
+                                                       final String longitudeString) {
+        return getDouble(latitudeString)
+                .lift(getDouble(longitudeString),
+                        (lat, lng) -> GeoCoordinate.create(lat, lng)
+                                                   .asResult("Coordinates out of bounds"))
+                .flatMap(Result::id);
     }
 
     private static Result<Double> getDouble(final String val) {
