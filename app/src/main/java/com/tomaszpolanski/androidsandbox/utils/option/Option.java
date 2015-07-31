@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.android.internal.util.Predicate;
+import com.tomaszpolanski.androidsandbox.models.Errors.ResultError;
 import com.tomaszpolanski.androidsandbox.utils.result.Result;
 
 import rx.functions.Action1;
@@ -18,6 +19,8 @@ public abstract class Option<T> {
 
     @NonNull
     public static final None NONE = new None();
+
+    public abstract boolean getIsSome();
 
     public abstract void iter(@NonNull final Action1<T> action);
 
@@ -43,14 +46,14 @@ public abstract class Option<T> {
     public abstract <OUT> Option<OUT> ofType(@NonNull final Class<OUT> type);
 
     @NonNull
-    public static <IN> Option<IN> asOption(@Nullable final IN value) {
+    public static <IN> Option<IN> ofObj(@Nullable final IN value) {
         return value == null ? Option.NONE : new Some(value);
     }
 
     @NonNull
     public static <OUT> Option<OUT> tryAsOption(@NonNull final Func0<OUT> f) {
         try {
-            return Option.asOption(f.call());
+            return Option.ofObj(f.call());
         } catch (Exception e) {
             return NONE;
         }
@@ -87,7 +90,7 @@ public abstract class Option<T> {
     }
 
     @NonNull
-    public abstract Result<T> toResult(@NonNull final String message);
+    public abstract Result<T> toResult(@NonNull final ResultError message);
 
 }
 

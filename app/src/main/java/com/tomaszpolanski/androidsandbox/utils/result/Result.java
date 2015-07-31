@@ -3,7 +3,9 @@ package com.tomaszpolanski.androidsandbox.utils.result;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.android.internal.util.Predicate;
+import com.tomaszpolanski.androidsandbox.models.Errors.ExceptionError;
+import com.tomaszpolanski.androidsandbox.models.Errors.NullError;
+import com.tomaszpolanski.androidsandbox.models.Errors.ResultError;
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
 
 import rx.functions.Func0;
@@ -12,6 +14,8 @@ import rx.functions.Func2;
 
 public abstract class Result<A> {
 
+    public abstract boolean getIsSuccess();
+
     @NonNull
     public abstract <OUT> Result<OUT> map(@NonNull final Func1<A, OUT> f);
 
@@ -19,13 +23,13 @@ public abstract class Result<A> {
     public abstract <OUT> Result<OUT> flatMap(@NonNull final Func1<A, Result<OUT>> f);
 
     @NonNull
-    public abstract Result<A> filter(@NonNull final Predicate<? super A> predicate,
-                                     @NonNull final Func1<A, String> failMessage);
+    public abstract Result<A> filter(@NonNull final Func1<A, Boolean> predicate,
+                                     @NonNull final Func1<A, ResultError> failMessage);
 
     public abstract boolean isSuccess();
 
     @NonNull
-    public abstract String getMessage();
+    public abstract ResultError getMessage();
 
     @NonNull
     public abstract A getUnsafe();
@@ -39,36 +43,37 @@ public abstract class Result<A> {
     }
 
     @NonNull
-    public static <A> Failure<A> failure(@NonNull final String failure) {
+    public static <A> Failure<A> failure(@NonNull final ResultError failure) {
         return new Failure<>(failure);
     }
 
     @NonNull
-    public static <A> Result<A> asResult(@Nullable A value) {
-        return asResult(value, "Object is null");
+    public static <A> Result<A> ofObj(@Nullable final A value,
+                                      @NonNull final String valueName) {
+        return ofOption(Option.ofObj(value), new NullError(valueName));
     }
 
     @NonNull
-    public static <A> Result<A> asResult(@Nullable final A value,
-                                         @NonNull final String failMessage) {
-        return asResult(Option.asOption(value), failMessage);
+    public static <A> Result<A> ofObj(@Nullable final A value,
+                                      @NonNull final ResultError failMessage) {
+        return ofOption(Option.ofObj(value), failMessage);
     }
 
     @NonNull
-    public static <A> Result<A> asResult(@NonNull final Option<A> value,
-                                         @NonNull final String failMessage) {
+    public static <A> Result<A> ofOption(@NonNull final Option<A> value,
+                                         @NonNull final ResultError failMessage) {
         return value != Option.NONE ? success(value.getUnsafe()) : failure(failMessage);
     }
 
     @NonNull
-    public abstract Option<A> asOption();
+    public abstract Option<A> toOption();
 
     @NonNull
     public static <A> Result<A> tryAsResult(@NonNull final Func0<A> f) {
         try {
-            return Result.asResult(f.call());
+            return Result.ofObj(f.call(), new NullError("Try as result error"));
         } catch (Exception e) {
-            return Result.failure("Result failed: " + e.toString());
+            return Result.failure(new ExceptionError(e));
         }
     }
 

@@ -18,8 +18,8 @@ public class PersonDetails {
     public static Option<PersonDetails> create(final String firstName,
                                                final String lastName,
                                                final Option<PersonDetails> significantOther) {
-        return Option.asOption(firstName)
-                     .flatMap(first -> Option.asOption(lastName)
+        return Option.ofObj(firstName)
+                     .flatMap(first -> Option.ofObj(lastName)
                                              .map(last -> new PersonDetails(first, last, significantOther)));
     }
 

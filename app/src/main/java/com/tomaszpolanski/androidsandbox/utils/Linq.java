@@ -259,7 +259,7 @@ public class Linq<T> extends ArrayList<T> {
         Option<T> option = Option.NONE;
         for (T value : source) {
             if (predicate.call(value)) {
-                option = Option.asOption(value);
+                option = Option.ofObj(value);
             }
         }
         return option;
@@ -291,7 +291,7 @@ public class Linq<T> extends ArrayList<T> {
     public static <T> Option<T> first(final Iterable<T> source, final Func1<T, Boolean> predicate) {
         for (T value : source) {
             if (predicate.call(value)) {
-                return Option.asOption(value);
+                return Option.ofObj(value);
             }
         }
         return Option.NONE;
@@ -352,7 +352,7 @@ public class Linq<T> extends ArrayList<T> {
     @SuppressWarnings("unchecked")
     public Option<T> getOption(int index) {
         try {
-            return Option.asOption(get(index));
+            return Option.ofObj(get(index));
         } catch (IndexOutOfBoundsException e) {
             return Option.NONE;
         }

@@ -11,7 +11,7 @@ public class Person {
     }
 
     public static Option<Person> create(final String name) {
-        return Option.asOption(name)
+        return Option.ofObj(name)
                      .filter(personName -> personName.length() != 0)
                      .filter(personName -> personName.length() < 20)
                      .map(personName -> new Person(personName));

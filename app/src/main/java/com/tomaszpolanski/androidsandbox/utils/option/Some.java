@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.android.internal.util.Predicate;
+import com.tomaszpolanski.androidsandbox.models.Errors.NullError;
+import com.tomaszpolanski.androidsandbox.models.Errors.ResultError;
 import com.tomaszpolanski.androidsandbox.utils.result.Result;
 
 import rx.functions.Action1;
@@ -23,6 +25,11 @@ public final class Some<T> extends Option<T> {
     }
 
     @Override
+    public boolean getIsSome() {
+        return true;
+    }
+
+    @Override
     public void iter(@NonNull final Action1<T> action) {
         action.call(mValue);
     }
@@ -30,7 +37,7 @@ public final class Some<T> extends Option<T> {
     @NonNull
     @Override
     public <OUT> Option<OUT> map(@NonNull final Func1<T, OUT> f) {
-        return Option.asOption(f.call(mValue));
+        return Option.ofObj(f.call(mValue));
     }
 
     @NonNull
@@ -66,7 +73,7 @@ public final class Some<T> extends Option<T> {
     @NonNull
     @Override
     public <OUT> Option<OUT> ofType(@NonNull Class<OUT> type) {
-        return type.isInstance(mValue) ? Option.asOption(type.cast(mValue)) : Option.NONE;
+        return type.isInstance(mValue) ? Option.ofObj(type.cast(mValue)) : Option.NONE;
     }
 
     @Nullable
@@ -107,14 +114,14 @@ public final class Some<T> extends Option<T> {
 
     @NonNull
     @Override
-    public Result<T> toResult(@NonNull final String message) {
-        return Result.asResult(mValue);
+    public Result<T> toResult(@NonNull final ResultError message) {
+        return Result.ofObj(mValue, new NullError("mValue"));
     }
 
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(final Object o) {
-        return Option.asOption(o)
+        return Option.ofObj(o)
                      .ofType(Some.class)
                      .filter(some -> some.getUnsafe().equals(mValue)) != Option.NONE;
     }

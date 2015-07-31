@@ -2,7 +2,7 @@ package com.tomaszpolanski.androidsandbox.utils.result;
 
 import android.support.annotation.NonNull;
 
-import com.android.internal.util.Predicate;
+import com.tomaszpolanski.androidsandbox.models.Errors.ResultError;
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
 
 import rx.functions.Func0;
@@ -16,6 +16,11 @@ public final class Success<A> extends Result<A> {
 
     Success(@NonNull A value) {
         mValue = value;
+    }
+
+    @Override
+    public boolean getIsSuccess() {
+        return true;
     }
 
     @NonNull
@@ -32,9 +37,9 @@ public final class Success<A> extends Result<A> {
 
     @NonNull
     @Override
-    public Result<A> filter(@NonNull final Predicate<? super A> predicate,
-                            @NonNull final Func1<A, String> failMessage) {
-        return predicate.apply(mValue) ? this : failure(failMessage.call(mValue));
+    public Result<A> filter(@NonNull final Func1<A, Boolean> predicate,
+                            @NonNull final Func1<A, ResultError> failMessage) {
+        return predicate.call(mValue) ? this : failure(failMessage.call(mValue));
     }
 
     @Override
@@ -44,7 +49,7 @@ public final class Success<A> extends Result<A> {
 
     @NonNull
     @Override
-    public String getMessage() {
+    public ResultError getMessage() {
         throw new IllegalStateException();
     }
 
@@ -62,8 +67,8 @@ public final class Success<A> extends Result<A> {
 
     @NonNull
     @Override
-    public Option<A> asOption() {
-        return Option.asOption(mValue);
+    public Option<A> toOption() {
+        return Option.ofObj(mValue);
     }
 
     @Override

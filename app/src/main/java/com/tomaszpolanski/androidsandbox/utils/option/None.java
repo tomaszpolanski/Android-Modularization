@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.android.internal.util.Predicate;
+import com.tomaszpolanski.androidsandbox.models.Errors.ResultError;
 import com.tomaszpolanski.androidsandbox.utils.result.Result;
 
 import rx.functions.Action1;
@@ -16,6 +17,11 @@ import rx.functions.Func4;
 public final class None<T> extends Option<T> {
 
     None() { }
+
+    @Override
+    public boolean getIsSome() {
+        return false;
+    }
 
     @Override
     public void iter(@NonNull final Action1<T> action) {
@@ -97,7 +103,7 @@ public final class None<T> extends Option<T> {
 
     @NonNull
     @Override
-    public Result<T> toResult(@NonNull final String message) {
+    public Result<T> toResult(@NonNull final ResultError message) {
         return Result.failure(message);
     }
 

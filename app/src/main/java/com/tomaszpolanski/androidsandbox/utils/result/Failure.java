@@ -3,6 +3,7 @@ package com.tomaszpolanski.androidsandbox.utils.result;
 import android.support.annotation.NonNull;
 
 import com.android.internal.util.Predicate;
+import com.tomaszpolanski.androidsandbox.models.Errors.ResultError;
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
 
 import rx.functions.Func0;
@@ -12,10 +13,15 @@ import rx.functions.Func2;
 public final class Failure<A> extends Result<A> {
 
     @NonNull
-    private final String mFailureMessage;
+    private final ResultError mFailureMessage;
 
-    Failure(@NonNull final String value) {
+    Failure(@NonNull final ResultError value) {
         mFailureMessage = value;
+    }
+
+    @Override
+    public boolean getIsSuccess() {
+        return false;
     }
 
     @NonNull
@@ -32,8 +38,8 @@ public final class Failure<A> extends Result<A> {
 
     @NonNull
     @Override
-    public Result<A> filter(@NonNull final Predicate<? super A> predicate,
-                            @NonNull final Func1<A, String> failMessage) {
+    public Result<A> filter(@NonNull final Func1<A, Boolean> predicate,
+                            @NonNull final Func1<A, ResultError> failMessage) {
         return failure(this.mFailureMessage);
     }
 
@@ -44,7 +50,7 @@ public final class Failure<A> extends Result<A> {
 
     @NonNull
     @Override
-    public String getMessage() {
+    public ResultError getMessage() {
         return mFailureMessage;
     }
 
@@ -62,7 +68,7 @@ public final class Failure<A> extends Result<A> {
 
     @NonNull
     @Override
-    public Option<A> asOption() {
+    public Option<A> toOption() {
         return Option.NONE;
     }
 

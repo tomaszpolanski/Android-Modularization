@@ -1,5 +1,6 @@
 package com.tomaszpolanski.androidsandbox.models;
 
+import com.tomaszpolanski.androidsandbox.models.Errors.detail.ArgumentError;
 import com.tomaszpolanski.androidsandbox.utils.MathUtils;
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
 import com.tomaszpolanski.androidsandbox.utils.result.Result;
@@ -35,18 +36,18 @@ public final class GeoCoordinate {
 
 
     public static Option<GeoCoordinate> create(final double latitude, final double longitude) {
-        return Option.asOption(latitude)
+        return Option.ofObj(latitude)
                      .filter(lat -> Math.abs(lat) <= 90.0)
-                     .flatMap(lat -> Option.asOption(longitude)
+                     .flatMap(lat -> Option.ofObj(longitude)
                                            .filter(lng -> Math.abs(lng) <= 180.0)
                                            .map(lng -> new GeoCoordinate(lat, lng)));
     }
 
 
     public static Result<GeoCoordinate> fromString(final String stringCoordinate) {
-        return Result.asResult(stringCoordinate)
+        return Result.ofObj(stringCoordinate, "stringCoordinate")
                      .map(cString -> cString.split(","))
-                     .filter(coordinateStringList -> coordinateStringList.length == 2, list -> "Invalid number of items: " + list.length)
+                     .filter(coordinateStringList -> coordinateStringList.length == 2, list -> new ArgumentError("Invalid number of items: " + list.length))
                      .flatMap(coordinateList -> getCoordinate(coordinateList[0], coordinateList[1]));
     }
 
@@ -55,8 +56,8 @@ public final class GeoCoordinate {
         return getDouble(latitudeString)
                 .lift(getDouble(longitudeString),
                         (lat, lng) -> GeoCoordinate.create(lat, lng)
-                                                   .asResult("Coordinates out of bounds"))
-                .flatMap(Result::id);
+                                                   .toResult(new ArgumentError("Coordinates out of bounds: " + lat + ", " + lng)))
+                                                   .flatMap(Result::id);
     }
 
     private static Result<Double> getDouble(final String val) {
@@ -67,7 +68,7 @@ public final class GeoCoordinate {
     @Override
     public boolean equals(final Object o) {
         final double difference = 0.0001;
-        return Option.asOption(o)
+        return Option.ofObj(o)
                      .filter(obj -> obj instanceof GeoCoordinate)
                      .map(obj -> (GeoCoordinate) obj)
                      .filter(other -> MathUtils.areEqual(other.mLongitude, mLongitude, difference))
