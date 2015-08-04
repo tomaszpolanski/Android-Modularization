@@ -18,7 +18,7 @@ public class TestPerson {
             Person person = personOption.getUnsafe();
             print("Person exits: ", person);
         } else {
-            System.console().printf("Was not able to create person with name: " + name);
+            System.console().printf("Was not able to just person with name: " + name);
         }
     }
 
@@ -42,7 +42,7 @@ public class TestPerson {
         Person.create(name)
               .match(
                       person -> Unit.asUnit(() ->  print("Person exits: ", person)),
-                      () -> Unit.asUnit(() -> System.console().printf("Was not able to create person with name: " + name)));
+                      () -> Unit.asUnit(() -> System.console().printf("Was not able to just person with name: " + name)));
     }
 
 

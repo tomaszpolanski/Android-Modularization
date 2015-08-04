@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.android.internal.util.Predicate;
 import com.tomaszpolanski.androidsandbox.models.Errors.NullError;
 import com.tomaszpolanski.androidsandbox.models.Errors.ResultError;
+import com.tomaszpolanski.androidsandbox.utils.Linq;
 import com.tomaszpolanski.androidsandbox.utils.result.Result;
 
 import rx.functions.Action1;
@@ -105,6 +106,12 @@ public final class Some<T> extends Option<T> {
                                                  @NonNull Option<IN3> option3,
                                                  @NonNull Func4<T, IN1, IN2, IN3, OUT> f) {
         return option1.lift(option2, option3, (o1, o2, o3) -> f.call(mValue, o1, o2, o3));
+    }
+
+    @NonNull
+    @Override
+    public Linq<T> toLinq() {
+        return Linq.just(mValue);
     }
 
     @Override

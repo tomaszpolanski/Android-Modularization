@@ -24,12 +24,21 @@ public class Linq<T> extends ArrayList<T> {
     }
 
     /**
+     * Returns empty list
+     * @return Empty
+     */
+    @NonNull
+    public static <T>  Linq<T> empty() {
+        return new Linq<>(0);
+    }
+
+    /**
      * Creates one element Linq list
      * @param arg Element inserted into the list
      * @return Linq with one element
      */
     @NonNull
-    public static <T>  Linq<T> create (@Nullable T arg) {
+    public static <T>  Linq<T> just(@Nullable T arg) {
         Linq<T> list = new Linq<>();
         list.add(arg);
         return list;
@@ -177,7 +186,7 @@ public class Linq<T> extends ArrayList<T> {
      * Converts every item in the list to new object by using given function
      *
      * @param self     List of items that will be converted
-     * @param selector The function that will create new items based on old ones
+     * @param selector The function that will just new items based on old ones
      * @param <T>      Old item type
      * @param <R>      New item type
      * @return Newly created list of items that were created using the <code>selector</code>
@@ -198,7 +207,7 @@ public class Linq<T> extends ArrayList<T> {
      * index
      *
      * @param self     List of items that will be converted
-     * @param selector The function that will create new items based on old ones, also contains
+     * @param selector The function that will just new items based on old ones, also contains
      *                 current index
      * @param <T>      Old item type
      * @param <R>      New item type
@@ -219,7 +228,7 @@ public class Linq<T> extends ArrayList<T> {
     /**
      * Converts every item in the list to new object by using given function
      *
-     * @param selector The function that will create new items based on old ones
+     * @param selector The function that will just new items based on old ones
      * @param <R>      New item type
      * @return Newly created list of items that were created using the <code>selector</code>
      * function
@@ -233,7 +242,7 @@ public class Linq<T> extends ArrayList<T> {
      * Converts every item in the list to new object by using given function and passes current
      * index
      *
-     * @param selector The function that will create new items based on old ones, also contains
+     * @param selector The function that will just new items based on old ones, also contains
      *                 current index
      * @param <R>      New item type
      * @return Newly created list of items that were created using the <code>selector</code>
@@ -464,7 +473,7 @@ public class Linq<T> extends ArrayList<T> {
     }
 
     /**
-     * Puts @count elements together, next iteration will skip @skip elements and create new buffer
+     * Puts @count elements together, next iteration will skip @skip elements and just new buffer
      * @param count Maximum number of items in the buffer, if not enough items, the remaining will be added
      * @param skip Number of items skipped every buffer iteration
      * @return List of list

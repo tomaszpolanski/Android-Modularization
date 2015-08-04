@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.android.internal.util.Predicate;
 import com.tomaszpolanski.androidsandbox.models.Errors.ResultError;
+import com.tomaszpolanski.androidsandbox.utils.Linq;
 import com.tomaszpolanski.androidsandbox.utils.result.Result;
 
 import rx.functions.Action1;
@@ -99,6 +100,12 @@ public final class None<T> extends Option<T> {
                                                  @NonNull Option<IN3> option3,
                                                  @NonNull Func4<T, IN1, IN2, IN3, OUT> f) {
         return NONE;
+    }
+
+    @NonNull
+    @Override
+    public Linq<T> toLinq() {
+        return Linq.empty();
     }
 
     @NonNull

@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.android.internal.util.Predicate;
 import com.tomaszpolanski.androidsandbox.models.Errors.ResultError;
+import com.tomaszpolanski.androidsandbox.utils.Linq;
 import com.tomaszpolanski.androidsandbox.utils.result.Result;
 
 import rx.functions.Action1;
@@ -82,6 +83,9 @@ public abstract class Option<T> {
                                                           @NonNull final Option<IN2> option2,
                                                           @NonNull final Option<IN3> option3,
                                                           @NonNull final Func4<T, IN1, IN2, IN3, OUT> f);
+
+    @NonNull
+    public abstract Linq<T> toLinq();
 
     @NonNull
     public Option<T> log(@Nullable final String message) {

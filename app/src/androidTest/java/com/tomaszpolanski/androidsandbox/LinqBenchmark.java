@@ -18,8 +18,8 @@ public class LinqBenchmark extends SimpleTestCase {
         ITEMS.map(it -> it + 1);
     }
 
-    public void testCreate() throws Exception {
-        Linq.create(1);
+    public void testJust() throws Exception {
+        Linq.just(1);
     }
 
     public void testAll() throws Exception {
