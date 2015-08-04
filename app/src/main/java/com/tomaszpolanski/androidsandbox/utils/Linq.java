@@ -12,7 +12,19 @@ import rx.functions.Func2;
 
 public class Linq<T> extends ArrayList<T> {
 
+    private Linq() {
+        super();
+    }
 
+    private Linq(int capacity) {
+        super(capacity);
+    }
+
+    /**
+     * Creates one element Linq list
+     * @param arg Element inserted into the list
+     * @return Linq with one element
+     */
     public static <T>  Linq<T> create (T arg) {
         Linq<T> list = new Linq<>();
         list.add(arg);
@@ -34,6 +46,20 @@ public class Linq<T> extends ArrayList<T> {
     }
 
     /**
+     * Creates list of consecutive integers
+     * @param start Value of first integer in the list
+     * @param count Number of integers in list
+     * @return List of integers
+     */
+    public static Linq<Integer> range(int start, int count) {
+        final Linq<Integer> list = new Linq<>(count);
+        for (int i = start; i <= count; i++) {
+            list.add(start);
+        }
+        return list;
+    }
+
+    /**
      * Checks if any elements in the list fulfils the predicate
      *
      * @param self      List to be checked
@@ -49,8 +75,6 @@ public class Linq<T> extends ArrayList<T> {
         return false;
     }
 
-
-
     /**
      * Checks if any elements in the list fulfils the predicate
      *
@@ -61,14 +85,29 @@ public class Linq<T> extends ArrayList<T> {
         return any(this, predicate);
     }
 
+    /**
+     * Returns if there are any items in the list
+     * @return true if more or equal one item count, otherwise false
+     */
     public boolean any() {
         return any(this, t -> true);
     }
 
+    /**
+     * Checks if all items fulfill the @predicate in @self
+     * @param self List to be checked
+     * @param predicate Expression which is checked
+     * @return true if all elements fulfills the @predicate, otherwise false
+     */
     public static <T> boolean all(final Iterable<T> self, final Func1<T, Boolean> predicate) {
         return !any(self, item -> !predicate.call(item));
     }
 
+    /**
+     * Checks if all items fulfill the @predicate in @this
+     * @param predicate Expression which is checked
+     * @return true if all elements fulfills the @predicate, otherwise false
+     */
     public boolean all(final Func1<T, Boolean> predicate) {
         return all(this, predicate);
     }
@@ -255,6 +294,13 @@ public class Linq<T> extends ArrayList<T> {
         return reduce(this, accumulator);
     }
 
+    /**
+     * Returns an Option of last item in @source that fulfils the @predicate, if no item is found,
+     * return Option.None
+     * @param source Items on which predicate will be run
+     * @param predicate Expression which is checked
+     * @return Single Option value
+     */
     public static <T> Option<T> last(final Iterable<T> source, final Func1<T, Boolean> predicate) {
         Option<T> option = Option.NONE;
         for (T value : source) {
@@ -265,19 +311,34 @@ public class Linq<T> extends ArrayList<T> {
         return option;
     }
 
+    /**
+     * Returns an Option of last item in @this that fulfils the @predicate, if no item is found,
+     * return Option.None
+     * @param predicate Expression which is checked
+     * @return Single Option value
+     */
     public Option<T> last(final Func1<T, Boolean> predicate) {
         return last(this, predicate);
     }
 
-
+    /**
+     * Returns an Option of last item in @source, if no item is found,
+     * return Option.None
+     * @param source Items from which item will be chosen
+     * @return Single Option value
+     */
     public static <T> Option<T> last(final Iterable<T> source) {
         return last(source, val -> true);
     }
 
+    /**
+     * Returns an Option of last item in @this, if no item is found,
+     * return Option.None
+     * @return Single Option value
+     */
     public Option<T> last() {
         return last(this);
     }
-
 
     /**
      * Returns an Option of first items in @source that fulfils the @predicate, if no item is found,
@@ -349,6 +410,11 @@ public class Linq<T> extends ArrayList<T> {
         return ofType(this, type);
     }
 
+    /**
+     * Returns an option of item at given @index
+     * @param index Position of returned item
+     * @return If index exists, returns Some of the item at the index, otherwise None
+     */
     @SuppressWarnings("unchecked")
     public Option<T> getOption(int index) {
         try {
@@ -359,6 +425,12 @@ public class Linq<T> extends ArrayList<T> {
 
     }
 
+    /**
+     * Puts @count elements together, next iteration will skip @skip elements and create new buffer
+     * @param count Maximum number of items in the buffer, if not enough items, the remaining will be added
+     * @param skip Number of items skipped every buffer iteration
+     * @return List of list
+     */
     public Linq<List<T>> buffer(int count, int skip) {
         Linq<List<T>> result = new Linq<>();
         List<T> buffer = new ArrayList<>(count);
@@ -373,6 +445,31 @@ public class Linq<T> extends ArrayList<T> {
             skipped += skip;
         }
         return result;
+    }
+
+    /**
+     * Filters the list on base if the @predicate returns Some or None
+     * @param source List to be checked
+     * @param selector Function that converts value to option of other value
+     * @return Filtered list, if selector returned Some, the inner value will be included
+     * in the returned list, if it returned None, the it will be omitted
+     */
+    public static <T, R> Linq<R> choose(final Iterable<T> source, final Func1<T, Option<R>> selector) {
+        return Linq.map(source, selector::call)
+                   .filter(Option::getIsSome)
+                   .map(Option::getUnsafe);
+    }
+
+    /**
+     * Filters the list on base if the @predicate returns Some or None
+     * @param selector Function that converts value to option of other value
+     * @return Filtered list, if selector returned Some, the inner value will be included
+     * in the returned list, if it returned None, the it will be omitted
+     */
+    public <R> Linq<R> choose(final Func1<T, Option<R>> selector) {
+        return map(selector::call)
+                .filter(Option::getIsSome)
+                .map(Option::getUnsafe);
     }
 
     @Override
