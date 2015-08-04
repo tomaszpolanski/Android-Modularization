@@ -1,6 +1,9 @@
 package com.tomaszpolanski.androidsandbox.utils;
 
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
 
 import java.util.ArrayList;
@@ -25,7 +28,8 @@ public class Linq<T> extends ArrayList<T> {
      * @param arg Element inserted into the list
      * @return Linq with one element
      */
-    public static <T>  Linq<T> create (T arg) {
+    @NonNull
+    public static <T>  Linq<T> create (@Nullable T arg) {
         Linq<T> list = new Linq<>();
         list.add(arg);
         return list;
@@ -37,7 +41,8 @@ public class Linq<T> extends ArrayList<T> {
      * @param iterator Iterator pointing to items
      * @return Newly constructed Linq object
      */
-    public static <T> Linq<T> create(Iterator<T> iterator) {
+    @NonNull
+    public static <T> Linq<T> create(@NonNull final Iterator<T> iterator) {
         Linq<T> list = new Linq<>();
         while (iterator.hasNext()) {
             list.add(iterator.next());
@@ -51,7 +56,9 @@ public class Linq<T> extends ArrayList<T> {
      * @param count Number of integers in list
      * @return List of integers
      */
-    public static Linq<Integer> range(int start, int count) {
+    @NonNull
+    public static Linq<Integer> range(final int start,
+                                      final int count) {
         final Linq<Integer> list = new Linq<>(count);
         for (int i = start; i <= count; i++) {
             list.add(start);
@@ -66,7 +73,8 @@ public class Linq<T> extends ArrayList<T> {
      * @param predicate Expression which is checked
      * @return true if check was fulfilled or not
      */
-    public static <T> boolean any(final Iterable<T> self, final Func1<T, Boolean> predicate) {
+    public static <T> boolean any(@NonNull final Iterable<T> self,
+                                  @NonNull final Func1<T, Boolean> predicate) {
         for (T item : self) {
             if (predicate.call(item)) {
                 return true;
@@ -81,7 +89,7 @@ public class Linq<T> extends ArrayList<T> {
      * @param predicate Expression which is checked
      * @return true if check was fulfilled or not
      */
-    public boolean any(final Func1<T, Boolean> predicate) {
+    public boolean any(@NonNull final Func1<T, Boolean> predicate) {
         return any(this, predicate);
     }
 
@@ -99,7 +107,8 @@ public class Linq<T> extends ArrayList<T> {
      * @param predicate Expression which is checked
      * @return true if all elements fulfills the @predicate, otherwise false
      */
-    public static <T> boolean all(final Iterable<T> self, final Func1<T, Boolean> predicate) {
+    public static <T> boolean all(@NonNull final Iterable<T> self,
+                                  @NonNull final Func1<T, Boolean> predicate) {
         return !any(self, item -> !predicate.call(item));
     }
 
@@ -108,7 +117,7 @@ public class Linq<T> extends ArrayList<T> {
      * @param predicate Expression which is checked
      * @return true if all elements fulfills the @predicate, otherwise false
      */
-    public boolean all(final Func1<T, Boolean> predicate) {
+    public boolean all(@NonNull final Func1<T, Boolean> predicate) {
         return all(this, predicate);
     }
 
@@ -119,7 +128,9 @@ public class Linq<T> extends ArrayList<T> {
      * @param predicate Expression which is checked
      * @return Newly created list of items that fulfilled the check
      */
-    public static <T> Linq<T> filter(final Iterable<T> self, final Func1<T, Boolean> predicate) {
+    @NonNull
+    public static <T> Linq<T> filter(@NonNull final Iterable<T> self,
+                                     @NonNull final Func1<T, Boolean> predicate) {
         Linq<T> newList = new Linq<>();
         for (T item : self) {
             if (predicate.call(item)) {
@@ -135,7 +146,8 @@ public class Linq<T> extends ArrayList<T> {
      * @param predicate Expression which is checked
      * @return Newly created list of items that fulfilled the check
      */
-    public Linq<T> filter(final Func1<T, Boolean> predicate) {
+    @NonNull
+    public Linq<T> filter(@NonNull final Func1<T, Boolean> predicate) {
         return filter(this, predicate);
     }
 
@@ -146,7 +158,8 @@ public class Linq<T> extends ArrayList<T> {
      * @param predicate Expression which is checked
      * @return Amount of items that fulfils the <code>predicate</code>
      */
-    public static <T> int count(final Iterable<T> self, final Func1<T, Boolean> predicate) {
+    public static <T> int count(@NonNull final Iterable<T> self,
+                                @NonNull final Func1<T, Boolean> predicate) {
         return Linq.filter(self, predicate).size();
     }
 
@@ -156,7 +169,7 @@ public class Linq<T> extends ArrayList<T> {
      * @param predicate Expression which is checked
      * @return Amount of items that fulfils the <code>predicate</code>
      */
-    public int count(final Func1<T, Boolean> predicate) {
+    public int count(@NonNull final Func1<T, Boolean> predicate) {
         return count(this, predicate);
     }
 
@@ -170,7 +183,9 @@ public class Linq<T> extends ArrayList<T> {
      * @return Newly created list of items that were created using the <code>selector</code>
      * function
      */
-    public static <T, R> Linq<R> map(final Iterable<T> self, final Func1<T, R> selector) {
+    @NonNull
+    public static <T, R> Linq<R> map(@NonNull final Iterable<T> self,
+                                     @NonNull final Func1<T, R> selector) {
         Linq<R> newList = new Linq<>();
         for (T item : self) {
             newList.add(selector.call(item));
@@ -190,7 +205,9 @@ public class Linq<T> extends ArrayList<T> {
      * @return Newly created list of items that were created using the <code>selector</code>
      * function
      */
-    public static <T, R> Linq<R> map(final Iterable<T> self, final Func2<T, Integer, R> selector) {
+    @NonNull
+    public static <T, R> Linq<R> map(@NonNull final Iterable<T> self,
+                                     @NonNull final Func2<T, Integer, R> selector) {
         Linq<R> newList = new Linq<>();
         Integer i = 0;
         for (T item : self) {
@@ -207,7 +224,8 @@ public class Linq<T> extends ArrayList<T> {
      * @return Newly created list of items that were created using the <code>selector</code>
      * function
      */
-    public <R> Linq<R> map(final Func1<T, R> selector) {
+    @NonNull
+    public <R> Linq<R> map(@NonNull final Func1<T, R> selector) {
         return map(this, selector);
     }
 
@@ -221,7 +239,8 @@ public class Linq<T> extends ArrayList<T> {
      * @return Newly created list of items that were created using the <code>selector</code>
      * function
      */
-    public <R> Linq<R> map(final Func2<T, Integer, R> selector) {
+    @NonNull
+    public <R> Linq<R> map(@NonNull final Func2<T, Integer, R> selector) {
         return map(this, selector);
     }
 
@@ -231,7 +250,8 @@ public class Linq<T> extends ArrayList<T> {
      * @param second List to be appended
      * @return Newly created list containing <code>second</code> appended
      */
-    public Linq<T> concat(final List<T> second) {
+    @NonNull
+    public Linq<T> concat(@NonNull final List<T> second) {
         Linq<T> newList = new Linq<>();
         newList.addAll(this);
         newList.addAll(second);
@@ -244,7 +264,8 @@ public class Linq<T> extends ArrayList<T> {
      * @param first List to be prepended to current one
      * @return Newly created list containing <code>first</code> prepended
      */
-    public Linq<T> reverseConcat(final Linq<T> first) {
+    @NonNull
+    public Linq<T> reverseConcat(@NonNull final Linq<T> first) {
         return first.concat(this);
     }
 
@@ -265,7 +286,9 @@ public class Linq<T> extends ArrayList<T> {
      * the source
      * @throws IllegalArgumentException if the source list has no items
      */
-    public static <T> T reduce(final Iterable<T> source, Func2<T, T, T> accumulator) throws IllegalArgumentException {
+    @Nullable
+    public static <T> T reduce(@NonNull final Iterable<T> source,
+                               @NonNull final Func2<T, T, T> accumulator) throws IllegalArgumentException {
         T aggregate = null;
         for (T arg : source) {
             if (aggregate == null) {
@@ -290,7 +313,8 @@ public class Linq<T> extends ArrayList<T> {
      * the source
      * @throws IllegalArgumentException if the source list has no items
      */
-    public T reduce(Func2<T, T, T> accumulator) throws IllegalArgumentException {
+    @Nullable
+    public T reduce(@NonNull final Func2<T, T, T> accumulator) throws IllegalArgumentException {
         return reduce(this, accumulator);
     }
 
@@ -301,7 +325,9 @@ public class Linq<T> extends ArrayList<T> {
      * @param predicate Expression which is checked
      * @return Single Option value
      */
-    public static <T> Option<T> last(final Iterable<T> source, final Func1<T, Boolean> predicate) {
+    @NonNull
+    public static <T> Option<T> last(@NonNull final Iterable<T> source,
+                                     @NonNull final Func1<T, Boolean> predicate) {
         Option<T> option = Option.NONE;
         for (T value : source) {
             if (predicate.call(value)) {
@@ -317,7 +343,8 @@ public class Linq<T> extends ArrayList<T> {
      * @param predicate Expression which is checked
      * @return Single Option value
      */
-    public Option<T> last(final Func1<T, Boolean> predicate) {
+    @NonNull
+    public Option<T> last(@NonNull final Func1<T, Boolean> predicate) {
         return last(this, predicate);
     }
 
@@ -327,7 +354,8 @@ public class Linq<T> extends ArrayList<T> {
      * @param source Items from which item will be chosen
      * @return Single Option value
      */
-    public static <T> Option<T> last(final Iterable<T> source) {
+    @NonNull
+    public static <T> Option<T> last(@NonNull final Iterable<T> source) {
         return last(source, val -> true);
     }
 
@@ -336,6 +364,7 @@ public class Linq<T> extends ArrayList<T> {
      * return Option.None
      * @return Single Option value
      */
+    @NonNull
     public Option<T> last() {
         return last(this);
     }
@@ -349,7 +378,9 @@ public class Linq<T> extends ArrayList<T> {
      * @return Single Option value
      */
     @SuppressWarnings("unchecked")
-    public static <T> Option<T> first(final Iterable<T> source, final Func1<T, Boolean> predicate) {
+    @NonNull
+    public static <T> Option<T> first(@NonNull final Iterable<T> source,
+                                      @NonNull final Func1<T, Boolean> predicate) {
         for (T value : source) {
             if (predicate.call(value)) {
                 return Option.ofObj(value);
@@ -364,7 +395,8 @@ public class Linq<T> extends ArrayList<T> {
      * @param predicate Expression which is checked
      * @return Single Option value
      */
-    public Option<T> first(final Func1<T, Boolean> predicate) {
+    @NonNull
+    public Option<T> first(@NonNull final Func1<T, Boolean> predicate) {
         return first(this, predicate);
     }
 
@@ -373,7 +405,8 @@ public class Linq<T> extends ArrayList<T> {
      *
      * @return Single Option value
      */
-    public static <T> Option<T> first(final Iterable<T> source) {
+    @NonNull
+    public static <T> Option<T> first(@NonNull final Iterable<T> source) {
         return first(source, val -> true);
     }
 
@@ -382,6 +415,7 @@ public class Linq<T> extends ArrayList<T> {
      *
      * @return Single Option value
      */
+    @NonNull
     public Option<T> first() {
         return first(this);
     }
@@ -395,7 +429,9 @@ public class Linq<T> extends ArrayList<T> {
      * @param <R>    Result type of items
      * @return Filtered list
      */
-    public static <T, R> Linq<R> ofType(final Iterable<T> source, final Class<R> type) {
+    @NonNull
+    public static <T, R> Linq<R> ofType(@NonNull final Iterable<T> source,
+                                        @NonNull final Class<R> type) {
         return Linq.filter(source, type::isInstance).map(type::cast);
     }
 
@@ -406,7 +442,8 @@ public class Linq<T> extends ArrayList<T> {
      * @param <R>  Result type of items
      * @return Filtered list
      */
-    public <R> Linq<R> ofType(final Class<R> type) {
+    @NonNull
+    public <R> Linq<R> ofType(@NonNull final Class<R> type) {
         return ofType(this, type);
     }
 
@@ -416,7 +453,8 @@ public class Linq<T> extends ArrayList<T> {
      * @return If index exists, returns Some of the item at the index, otherwise None
      */
     @SuppressWarnings("unchecked")
-    public Option<T> getOption(int index) {
+    @NonNull
+    public Option<T> getOption(final int index) {
         try {
             return Option.ofObj(get(index));
         } catch (IndexOutOfBoundsException e) {
@@ -431,7 +469,9 @@ public class Linq<T> extends ArrayList<T> {
      * @param skip Number of items skipped every buffer iteration
      * @return List of list
      */
-    public Linq<List<T>> buffer(int count, int skip) {
+    @NonNull
+    public Linq<List<T>> buffer(final int count,
+                                final int skip) {
         Linq<List<T>> result = new Linq<>();
         List<T> buffer = new ArrayList<>(count);
         int skipped = 0;
@@ -454,7 +494,9 @@ public class Linq<T> extends ArrayList<T> {
      * @return Filtered list, if selector returned Some, the inner value will be included
      * in the returned list, if it returned None, the it will be omitted
      */
-    public static <T, R> Linq<R> choose(final Iterable<T> source, final Func1<T, Option<R>> selector) {
+    @NonNull
+    public static <T, R> Linq<R> choose(@NonNull final Iterable<T> source,
+                                        @NonNull final Func1<T, Option<R>> selector) {
         return Linq.map(source, selector::call)
                    .filter(Option::getIsSome)
                    .map(Option::getUnsafe);
@@ -466,7 +508,8 @@ public class Linq<T> extends ArrayList<T> {
      * @return Filtered list, if selector returned Some, the inner value will be included
      * in the returned list, if it returned None, the it will be omitted
      */
-    public <R> Linq<R> choose(final Func1<T, Option<R>> selector) {
+    @NonNull
+    public <R> Linq<R> choose(@NonNull final Func1<T, Option<R>> selector) {
         return map(selector::call)
                 .filter(Option::getIsSome)
                 .map(Option::getUnsafe);
