@@ -4,6 +4,8 @@ import com.tomaszpolanski.androidsandbox.utils.Linq;
 import com.tomaszpolanski.androidsandbox.utils.SimpleTestCase;
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
 
+import rx.Observable;
+
 public class LinqBenchmark extends SimpleTestCase {
 
     private static final int ITEM_COUNT = 1000000;
@@ -14,8 +16,35 @@ public class LinqBenchmark extends SimpleTestCase {
         Linq.range(0, ITEM_COUNT);
     }
 
+    public void testRangeObservable() throws Exception {
+        Observable.range(0, ITEM_COUNT).toBlocking().toIterable();
+    }
+
     public void testMap() throws Exception {
         ITEMS.map(it -> it + 1);
+    }
+
+    public void testMapCompare() throws Exception {
+        Linq.range(0, ITEM_COUNT).map(it -> it + 1);
+    }
+
+    public void testMapObservable() throws Exception {
+        Observable.range(0, ITEM_COUNT).map(it -> it + 1).toBlocking().toIterable();
+    }
+
+    public void testBenchmark() throws Exception {
+        Linq.range(0, ITEM_COUNT)
+            .map(it -> it + 1)
+            .filter(it -> it % 2 == 0)
+            .first();
+    }
+
+    public void testBenchmarkObservable() throws Exception {
+        Observable.range(0, ITEM_COUNT)
+                  .map(it -> it + 1)
+                  .filter(it -> it % 2 == 0)
+                  .toBlocking()
+                  .firstOrDefault(null);
     }
 
     public void testJust() throws Exception {
