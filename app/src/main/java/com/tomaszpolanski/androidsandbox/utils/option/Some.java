@@ -49,8 +49,8 @@ public final class Some<T> extends Option<T> {
 
     @NonNull
     @Override
-    public Option<T> filter(@NonNull final Predicate<? super T> predicate) {
-        return predicate.apply(mValue) ? this : NONE;
+    public Option<T> filter(@NonNull final Func1<T, Boolean> predicate) {
+        return predicate.call(mValue) ? this : NONE;
     }
 
     @NonNull

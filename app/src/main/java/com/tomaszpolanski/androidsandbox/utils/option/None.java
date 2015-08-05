@@ -43,7 +43,7 @@ public final class None<T> extends Option<T> {
 
     @NonNull
     @Override
-    public Option<T> filter(@NonNull final Predicate<? super T> predicate) {
+    public Option<T> filter(@NonNull final Func1<T, Boolean> predicate) {
         return NONE;
     }
 
