@@ -1,6 +1,7 @@
 package com.tomaszpolanski.androidsandbox;
 
 import com.tomaszpolanski.androidsandbox.utils.Linq;
+import com.tomaszpolanski.androidsandbox.utils.ObservableEx;
 import com.tomaszpolanski.androidsandbox.utils.SimpleTestCase;
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
 
@@ -93,5 +94,11 @@ public class LinqBenchmark extends SimpleTestCase {
 
     public void testChooseStatic() throws Exception {
         Linq.choose(ITEMS, it -> it % 2 == 0 ? Option.ofObj(it) : Option.NONE);
+    }
+
+    public void testChooseObservable() throws Exception {
+        ObservableEx.choose(Observable.range(0, ITEM_COUNT), it -> it % 2 == 0 ? Option.ofObj(it) : Option.NONE)
+                    .toBlocking()
+                    .toIterable();
     }
 }
