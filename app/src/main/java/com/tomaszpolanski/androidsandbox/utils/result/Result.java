@@ -8,9 +8,7 @@ import com.tomaszpolanski.androidsandbox.models.Errors.NullError;
 import com.tomaszpolanski.androidsandbox.models.Errors.ResultError;
 import com.tomaszpolanski.androidsandbox.utils.Unit;
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
-import com.tomaszpolanski.androidsandbox.utils.option.OptionUnsafe;
 
-import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
@@ -52,7 +50,7 @@ public abstract class Result<T> {
      */
     @NonNull
     public abstract Result<T> filter(@NonNull final Func1<T, Boolean> predicate,
-                                     @NonNull final Func1<T, ResultError> failMessage);
+                                     @NonNull final Func1<T, ? super ResultError> failMessage);
 
     /**
      * ATTENTION: Only use it when you know what you are doing!
@@ -196,7 +194,7 @@ public abstract class Result<T> {
     /**
      * Combines given Options using @f
      *
-     * @param resultIn Result that should be combined with current opresulttion
+     * @param resultIn Result that should be combined with current result
      * @param f       Function that combines all inner values of the results into one value
      * @return Result of Successful if all the Results were Successful, otherwise Failure
      */
