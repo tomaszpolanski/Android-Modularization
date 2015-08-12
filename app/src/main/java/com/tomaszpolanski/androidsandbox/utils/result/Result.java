@@ -39,7 +39,7 @@ public abstract class Result<A> {
     public abstract Result<A> or(@NonNull final Func0<Result<A>> f);
 
     @NonNull
-    public static <A> Success<A> success(@NonNull final A value) {
+    public static <A> Result<A> success(@NonNull final A value) {
         return new Success(value);
     }
 
@@ -63,7 +63,8 @@ public abstract class Result<A> {
     @NonNull
     public static <A> Result<A> ofOption(@NonNull final Option<A> value,
                                          @NonNull final ResultError failMessage) {
-        return value != Option.NONE ? success(OptionUnsafe.getUnsafe(value)) : failure(failMessage);
+        return value.<Result<A>>match(Result::success,
+                () -> failure(failMessage));
     }
 
     @NonNull

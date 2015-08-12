@@ -82,7 +82,7 @@ public final class None<T> extends Option<T> {
 
     @NonNull
     @Override
-    public Unit match(@NonNull Action1<T> fSome, @NonNull Action0 fNone) {
+    public Unit matchAction(@NonNull Action1<T> fSome, @NonNull Action0 fNone) {
         return Unit.asUnit(fNone);
     }
 

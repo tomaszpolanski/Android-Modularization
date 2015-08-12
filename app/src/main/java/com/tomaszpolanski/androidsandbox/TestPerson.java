@@ -43,8 +43,8 @@ public class TestPerson {
 
     private static void betterPrintPerson(final String name) {
         Person.create(name)
-              .<Unit>match(
-                      person ->print("Person exits: ", person),
+              .matchAction(
+                      person -> print("Person exits: ", person),
                       () -> System.console().printf("Was not able to just person with name: " + name));
     }
 

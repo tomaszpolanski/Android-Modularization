@@ -88,8 +88,8 @@ public final class Some<T> extends Option<T> {
 
     @NonNull
     @Override
-    public Unit match(@NonNull final Action1<T> fSome,
-                      @NonNull final Action0 fNone) {
+    public Unit matchAction(@NonNull final Action1<T> fSome,
+                            @NonNull final Action0 fNone) {
         return Unit.asUnit(() -> fSome.call(mValue));
     }
 
@@ -144,8 +144,8 @@ public final class Some<T> extends Option<T> {
     @Override
     public boolean equals(final Object o) {
         return Option.ofObj(o)
-                     .ofType(Some.class)
-                     .filter(some -> some.getUnsafe().equals(mValue)) != Option.NONE;
+                .ofType(Some.class)
+                .filter(some -> some.getUnsafe().equals(mValue)) != Option.NONE;
     }
 
     @Override

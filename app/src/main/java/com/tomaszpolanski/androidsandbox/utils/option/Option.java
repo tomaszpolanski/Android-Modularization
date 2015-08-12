@@ -151,8 +151,8 @@ public abstract class Option<T> {
      * @return Unit
      */
     @NonNull
-    public abstract Unit match(@NonNull final Action1<T> fSome,
-                               @NonNull final Action0 fNone);
+    public abstract Unit matchAction(@NonNull final Action1<T> fSome,
+                                     @NonNull final Action0 fNone);
 
     /**
      * Matches current optional to Some or None and returns appropriate value
