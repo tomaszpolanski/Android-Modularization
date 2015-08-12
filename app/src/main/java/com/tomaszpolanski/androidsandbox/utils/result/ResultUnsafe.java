@@ -16,7 +16,7 @@ public final class ResultUnsafe {
      *
      * Returns inner value of result if it is Success, otherwise will throw uncatchable exception
      * @param result Result that will be unwrapped
-     * @return Value of Success or if Failure, throws exception
+     * @return Value of Success orResult if Failure, throws exception
      */
     @NonNull
     public static <T> T getUnsafe(@NonNull final Result<T> result) {
@@ -28,10 +28,10 @@ public final class ResultUnsafe {
      *
      * Returns failure reason of the result option if it is Failure, otherwise will throw uncatchable exception
      * @param result Result that will be unwrapped
-     * @return ResultError of Failure or if Success, throws exception
+     * @return ResultError of Failure orResult if Success, throws exception
      */
     @NonNull
     public static <T> ResultError getFailure(@NonNull final Result<T> result) {
-        return result.getMessage();
+        return result.getMessageUnsafe();
     }
 }

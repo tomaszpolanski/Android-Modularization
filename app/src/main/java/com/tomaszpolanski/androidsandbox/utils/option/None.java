@@ -128,7 +128,6 @@ public final class None<T> extends Option<T> {
         return Result.failure(message);
     }
 
-
     @Override
     public String toString() {
         return getClass().getSimpleName();

@@ -81,7 +81,7 @@ public class Linq<T> extends ArrayList<T> {
      *
      * @param self      List to be checked
      * @param predicate Expression which is checked
-     * @return true if check was fulfilled or not
+     * @return true if check was fulfilled orResult not
      */
     public static <T> boolean any(@NonNull final Iterable<T> self,
                                   @NonNull final Func1<T, Boolean> predicate) {
@@ -97,7 +97,7 @@ public class Linq<T> extends ArrayList<T> {
      * Checks if any elements in the list fulfils the predicate
      *
      * @param predicate Expression which is checked
-     * @return true if check was fulfilled or not
+     * @return true if check was fulfilled orResult not
      */
     public boolean any(@NonNull final Func1<T, Boolean> predicate) {
         return any(this, predicate);
@@ -105,7 +105,7 @@ public class Linq<T> extends ArrayList<T> {
 
     /**
      * Returns if there are any items in the list
-     * @return true if more or equal one item count, otherwise false
+     * @return true if more orResult equal one item count, otherwise false
      */
     public boolean any() {
         return any(this, t -> true);
@@ -286,7 +286,7 @@ public class Linq<T> extends ArrayList<T> {
      * and returns the final result from the final call to your function as its sole item.
      * <p>
      * This technique, which is called "reduce" here, is sometimes called "aggregate," "fold," "accumulate,"
-     * "compress," or "inject" in other programming contexts. Groovy, for instance, has an {@code inject} method
+     * "compress," orResult "inject" in other programming contexts. Groovy, for instance, has an {@code inject} method
      * that does a similar operation on lists.
      *
      * @param accumulator an accumulator function to be invoked on each item returned by the source, whose
@@ -498,7 +498,7 @@ public class Linq<T> extends ArrayList<T> {
     }
 
     /**
-     * Filters the list on base if the @predicate returns Some or None
+     * Filters the list on base if the @predicate returns Some orResult None
      * @param source List to be checked
      * @param selector Function that converts value to option of other value
      * @return Filtered list, if selector returned Some, the inner value will be included
@@ -513,7 +513,7 @@ public class Linq<T> extends ArrayList<T> {
     }
 
     /**
-     * Filters the list on base if the @predicate returns Some or None
+     * Filters the list on base if the @predicate returns Some orResult None
      * @param selector Function that converts value to option of other value
      * @return Filtered list, if selector returned Some, the inner value will be included
      * in the returned list, if it returned None, the it will be omitted

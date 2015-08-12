@@ -144,7 +144,7 @@ public abstract class Option<T> {
 
 
     /**
-     * Matches current optional to Some or None and unit
+     * Matches current optional to Some or None and returns unit
      *
      * @param fSome Action that will be called if value exists
      * @param fNone Action that will be called if value does not exist
@@ -155,7 +155,7 @@ public abstract class Option<T> {
                                      @NonNull final Action0 fNone);
 
     /**
-     * Matches current optional to Some or None and returns appropriate value
+     * Matches current optional to Some orResult None and returns appropriate value
      *
      * @param fSome Function that will be called if value exists
      * @param fNone Function that will be called if value does not exist

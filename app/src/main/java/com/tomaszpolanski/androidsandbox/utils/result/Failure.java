@@ -26,30 +26,25 @@ public final class Failure<A> extends Result<A> {
     @NonNull
     @Override
     public <OUT> Result<OUT> map(@NonNull final Func1<A, OUT> f) {
-        return failure(mFailure);
+        return (Result<OUT>)this;
     }
 
     @NonNull
     @Override
     public <OUT> Result<OUT> flatMap(@NonNull final Func1<A, Result<OUT>> f) {
-        return failure(mFailure);
+        return (Result<OUT>)this;
     }
 
     @NonNull
     @Override
     public Result<A> filter(@NonNull final Func1<A, Boolean> predicate,
                             @NonNull final Func1<A, ResultError> failMessage) {
-        return failure(mFailure);
-    }
-
-    @Override
-    public boolean isSuccess() {
-        return false;
+        return this;
     }
 
     @NonNull
     @Override
-    ResultError getMessage() {
+    ResultError getMessageUnsafe() {
         return mFailure;
     }
 
@@ -61,7 +56,7 @@ public final class Failure<A> extends Result<A> {
 
     @NonNull
     @Override
-    public Result<A> or(@NonNull final Func0<Result<A>> f) {
+    public Result<A> orResult(@NonNull final Func0<Result<A>> f) {
         return f.call();
     }
 
@@ -86,6 +81,6 @@ public final class Failure<A> extends Result<A> {
 
     @Override
     public String toString() {
-        return "Failure: " + getMessage();
+        return "Failure: " + getMessageUnsafe();
     }
 }

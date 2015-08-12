@@ -26,7 +26,7 @@ public final class Success<A> extends Result<A> {
     @NonNull
     @Override
     public <OUT> Result<OUT> map(@NonNull final Func1<A, OUT> f) {
-        return success(f.call(mValue));
+        return new Success(f.call(mValue));
     }
 
     @NonNull
@@ -39,17 +39,12 @@ public final class Success<A> extends Result<A> {
     @Override
     public Result<A> filter(@NonNull final Func1<A, Boolean> predicate,
                             @NonNull final Func1<A, ResultError> failMessage) {
-        return predicate.call(mValue) ? this : failure(failMessage.call(mValue));
-    }
-
-    @Override
-    public boolean isSuccess() {
-        return true;
+        return predicate.call(mValue) ? this : new Failure(failMessage.call(mValue));
     }
 
     @NonNull
     @Override
-    ResultError getMessage() {
+    ResultError getMessageUnsafe() {
         throw new IllegalStateException();
     }
 
@@ -61,7 +56,7 @@ public final class Success<A> extends Result<A> {
 
     @NonNull
     @Override
-    public Result<A> or(@NonNull final Func0<Result<A>> f) {
+    public Result<A> orResult(@NonNull final Func0<Result<A>> f) {
         return this;
     }
 
