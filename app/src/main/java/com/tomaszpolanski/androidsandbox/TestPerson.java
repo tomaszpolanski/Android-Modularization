@@ -5,6 +5,8 @@ import com.tomaszpolanski.androidsandbox.models.PersonDetails;
 import com.tomaszpolanski.androidsandbox.utils.Unit;
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
 
+import rx.functions.Action1;
+
 public class TestPerson {
 
     private static void print(final String message, final Person person) {
@@ -40,9 +42,9 @@ public class TestPerson {
 
     private static void betterPrintPerson(final String name) {
         Person.create(name)
-              .match(
-                      person -> Unit.asUnit(() ->  print("Person exits: ", person)),
-                      () -> Unit.asUnit(() -> System.console().printf("Was not able to just person with name: " + name)));
+              .<Unit>match(
+                      person ->print("Person exits: ", person),
+                      () -> System.console().printf("Was not able to just person with name: " + name));
     }
 
 

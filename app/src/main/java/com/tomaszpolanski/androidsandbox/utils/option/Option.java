@@ -5,8 +5,10 @@ import android.support.annotation.Nullable;
 
 import com.tomaszpolanski.androidsandbox.models.Errors.ResultError;
 import com.tomaszpolanski.androidsandbox.utils.Linq;
+import com.tomaszpolanski.androidsandbox.utils.Unit;
 import com.tomaszpolanski.androidsandbox.utils.result.Result;
 
+import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
@@ -24,18 +26,21 @@ public abstract class Option<T> {
 
     /**
      * Indicates if option contains value
+     *
      * @return true if Option is Some, otherwise false
      */
     public abstract boolean getIsSome();
 
     /**
      * Runs the action on Option value if exists, otherwise does nothing
+     *
      * @param action Action that is called on the inner value
      */
     public abstract void iter(@NonNull final Action1<T> action);
 
     /**
      * Converts inner value with @selector if value exists, otherwise does nothing
+     *
      * @param selector Function that converts inner value
      * @return If value exists, returns converted value otherwise does nothing
      */
@@ -44,6 +49,7 @@ public abstract class Option<T> {
 
     /**
      * Binds option to another option
+     *
      * @param selector Function that returns option to be bound to
      * @return Bound option
      */
@@ -52,6 +58,7 @@ public abstract class Option<T> {
 
     /**
      * Filters options fulfilling given @predicate
+     *
      * @param predicate Function returning true if the parameter should be included
      * @return Some if the value checks the condition, otherwise None
      */
@@ -60,6 +67,7 @@ public abstract class Option<T> {
 
     /**
      * Returns option if current value is None
+     *
      * @param f Function returning new Option
      * @return Option given by the function if current is None, otherwise returns current one
      */
@@ -68,6 +76,7 @@ public abstract class Option<T> {
 
     /**
      * Returns current inner value if it exists, otherwise the value supplied by @def
+     *
      * @param def Function that returns default value
      * @return If value exists, then returns it, otherwise the default
      */
@@ -76,7 +85,7 @@ public abstract class Option<T> {
 
     /**
      * Forsfully tries to unwrap the inner value.
-     *
+     * <p>
      * Caution! Use this value only in special, justified cases!
      * Use @match instead.
      *
@@ -88,7 +97,8 @@ public abstract class Option<T> {
 
     /**
      * Casts the inner value to given type
-     * @param type Class of the new object
+     *
+     * @param type  Class of the new object
      * @param <OUT> Type the value should be cast to
      * @return Option of inner value cast to the @<OUT>, if not possible, then None
      */
@@ -97,6 +107,7 @@ public abstract class Option<T> {
 
     /**
      * Option created from given @value
+     *
      * @param value Value that should be wrapped in an Option
      * @return Some of the @value if it is not null, otherwise None
      */
@@ -107,6 +118,7 @@ public abstract class Option<T> {
 
     /**
      * Option of value returned by the function
+     *
      * @param f Function that returns a value, that function could throw an exception
      * @return Option of a value returned by @f, if @f threw an exception, then returns None
      */
@@ -121,6 +133,7 @@ public abstract class Option<T> {
 
     /**
      * Matches current optional to Some or None and returns appropriate value
+     *
      * @param fSome Function that will be called if value exists
      * @param fNone Function that will be called if value does not exist
      * @return Value returned by either @fSome of @fNone
@@ -129,8 +142,21 @@ public abstract class Option<T> {
     public abstract <OUT> OUT match(@NonNull final Func1<T, OUT> fSome,
                                     @NonNull final Func0<OUT> fNone);
 
+
+    /**
+     * Matches current optional to Some or None and unit
+     *
+     * @param fSome Action that will be called if value exists
+     * @param fNone Action that will be called if value does not exist
+     * @return Unit
+     */
+    @Nullable
+    public abstract Unit match(@NonNull final Action1<T> fSome,
+                               @NonNull final Action0 fNone);
+
     /**
      * Identity function
+     *
      * @return Current option
      */
     @NonNull
@@ -140,19 +166,21 @@ public abstract class Option<T> {
 
     /**
      * Combines given Options using @f
+     *
      * @param option1 Option that should be combined with current option
-     * @param f Function that combines all inner values of the options into one value
+     * @param f       Function that combines all inner values of the options into one value
      * @return Option of some if all the Options were Some, otherwise None
      */
     @NonNull
-    public abstract  <IN1, OUT> Option<OUT> lift(@NonNull final Option<IN1> option1,
-                                                 @NonNull final Func2<T, IN1, OUT> f);
+    public abstract <IN1, OUT> Option<OUT> lift(@NonNull final Option<IN1> option1,
+                                                @NonNull final Func2<T, IN1, OUT> f);
 
     /**
      * Combines given Options using @f
+     *
      * @param option1 Option that should be combined with current option
      * @param option2 Option that should be combined with current option
-     * @param f Function that combines all inner values of the options into one value
+     * @param f       Function that combines all inner values of the options into one value
      * @return Option of some if all the Options were Some, otherwise None
      */
     @NonNull
@@ -162,10 +190,11 @@ public abstract class Option<T> {
 
     /**
      * Combines given Options using @f
+     *
      * @param option1 Option that should be combined with current option
      * @param option2 Option that should be combined with current option
      * @param option3 Option that should be combined with current option
-     * @param f Function that combines all inner values of the options into one value
+     * @param f       Function that combines all inner values of the options into one value
      * @return Option of some if all the Options were Some, otherwise None
      */
     @NonNull
@@ -176,6 +205,7 @@ public abstract class Option<T> {
 
     /**
      * Converts Option to list
+     *
      * @return If Option is of Some, creates a list with one element, otherwise creates an empty list
      */
     @NonNull
@@ -183,6 +213,7 @@ public abstract class Option<T> {
 
     /**
      * Logs message
+     *
      * @param message message that will be logged
      * @return Current option
      */
@@ -194,6 +225,7 @@ public abstract class Option<T> {
 
     /**
      * Converts Option to a Result
+     *
      * @param message Error message that will be added to Result in case if current Option is None
      * @return Success if the option is of Some, otherwise Failure
      */

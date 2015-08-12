@@ -6,8 +6,10 @@ import android.support.annotation.Nullable;
 import com.android.internal.util.Predicate;
 import com.tomaszpolanski.androidsandbox.models.Errors.ResultError;
 import com.tomaszpolanski.androidsandbox.utils.Linq;
+import com.tomaszpolanski.androidsandbox.utils.Unit;
 import com.tomaszpolanski.androidsandbox.utils.result.Result;
 
+import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
@@ -76,6 +78,12 @@ public final class None<T> extends Option<T> {
     public <OUT> OUT match(@NonNull Func1<T, OUT> fSome,
                            @NonNull Func0<OUT> fNone) {
         return fNone.call();
+    }
+
+    @Nullable
+    @Override
+    public Unit match(@NonNull Action1<T> fSome, @NonNull Action0 fNone) {
+        return Unit.asUnit(fNone);
     }
 
     @NonNull

@@ -7,8 +7,10 @@ import com.android.internal.util.Predicate;
 import com.tomaszpolanski.androidsandbox.models.Errors.NullError;
 import com.tomaszpolanski.androidsandbox.models.Errors.ResultError;
 import com.tomaszpolanski.androidsandbox.utils.Linq;
+import com.tomaszpolanski.androidsandbox.utils.Unit;
 import com.tomaszpolanski.androidsandbox.utils.result.Result;
 
+import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
@@ -73,15 +75,22 @@ public final class Some<T> extends Option<T> {
 
     @NonNull
     @Override
-    public <OUT> Option<OUT> ofType(@NonNull Class<OUT> type) {
+    public <OUT> Option<OUT> ofType(@NonNull final Class<OUT> type) {
         return type.isInstance(mValue) ? Option.ofObj(type.cast(mValue)) : Option.NONE;
     }
 
     @Nullable
     @Override
-    public <OUT> OUT match(@NonNull Func1<T, OUT> fSome,
-                           @NonNull Func0<OUT> fNone) {
+    public <OUT> OUT match(@NonNull final Func1<T, OUT> fSome,
+                           @NonNull final Func0<OUT> fNone) {
         return fSome.call(mValue);
+    }
+
+    @Nullable
+    @Override
+    public Unit match(@NonNull final Action1<T> fSome,
+                      @NonNull final Action0 fNone) {
+        return Unit.asUnit(() -> fSome.call(mValue));
     }
 
     @NonNull
@@ -93,18 +102,18 @@ public final class Some<T> extends Option<T> {
 
     @NonNull
     @Override
-    public <IN1, IN2, OUT> Option<OUT> lift(@NonNull Option<IN1> option1,
-                                            @NonNull Option<IN2> option2,
-                                            @NonNull Func3<T, IN1, IN2, OUT> f) {
+    public <IN1, IN2, OUT> Option<OUT> lift(@NonNull final Option<IN1> option1,
+                                            @NonNull final Option<IN2> option2,
+                                            @NonNull final Func3<T, IN1, IN2, OUT> f) {
         return option1.lift(option2, (o1, o2) -> f.call(mValue, o1, o2));
     }
 
     @NonNull
     @Override
-    public <IN1, IN2, IN3, OUT> Option<OUT> lift(@NonNull Option<IN1> option1,
-                                                 @NonNull Option<IN2> option2,
-                                                 @NonNull Option<IN3> option3,
-                                                 @NonNull Func4<T, IN1, IN2, IN3, OUT> f) {
+    public <IN1, IN2, IN3, OUT> Option<OUT> lift(@NonNull final Option<IN1> option1,
+                                                 @NonNull final Option<IN2> option2,
+                                                 @NonNull final Option<IN3> option3,
+                                                 @NonNull final Func4<T, IN1, IN2, IN3, OUT> f) {
         return option1.lift(option2, option3, (o1, o2, o3) -> f.call(mValue, o1, o2, o3));
     }
 

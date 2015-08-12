@@ -7,7 +7,8 @@ import com.tomaszpolanski.androidsandbox.utils.option.Option;
 
 import rx.Observable;
 
-public class LinqBenchmark extends SimpleTestCase {
+public class LinqBenchmark //extends SimpleTestCase
+{
 
     private static final int ITEM_COUNT = 1000000;
 
