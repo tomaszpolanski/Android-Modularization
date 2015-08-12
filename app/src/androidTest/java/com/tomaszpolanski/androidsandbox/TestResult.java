@@ -7,6 +7,7 @@ import com.tomaszpolanski.androidsandbox.utils.SimpleTestCase;
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
 import com.tomaszpolanski.androidsandbox.utils.option.OptionUnsafe;
 import com.tomaszpolanski.androidsandbox.utils.result.Result;
+import com.tomaszpolanski.androidsandbox.utils.result.ResultUnsafe;
 
 public class TestResult extends SimpleTestCase {
 
@@ -17,7 +18,7 @@ public class TestResult extends SimpleTestCase {
         Result<String> re = Result.ofObj(str, "str");
 
         assertTrue(re.getIsSuccess());
-        assertEquals(str, re.getUnsafe());
+        assertEquals(str, ResultUnsafe.getUnsafe(re));
     }
 
     public void testOfObjFailure() throws Exception {
@@ -35,7 +36,7 @@ public class TestResult extends SimpleTestCase {
                 .map(__ -> str);
 
         assertTrue(re.getIsSuccess());
-        assertEquals(str, re.getUnsafe());
+        assertEquals(str, ResultUnsafe.getUnsafe(re));
     }
 
     public void testMapFailure() throws Exception {
@@ -54,7 +55,7 @@ public class TestResult extends SimpleTestCase {
                 .filter(val -> val.equals(str), val -> new NullError(val));
 
         assertTrue(re.getIsSuccess());
-        assertEquals(str, re.getUnsafe());
+        assertEquals(str, ResultUnsafe.getUnsafe(re));
     }
 
     public void testFilterSomeFailed() throws Exception {
@@ -65,7 +66,7 @@ public class TestResult extends SimpleTestCase {
                 .filter(val -> val.equals(""), val -> new ArgumentError(error));
 
         assertFalse(re.getIsSuccess());
-        assertEquals(error, re.getMessage().getMessage());
+        assertEquals(error, ResultUnsafe.getFailure(re).getMessage());
     }
 
     public void testFilterFailure() throws Exception {
@@ -83,7 +84,7 @@ public class TestResult extends SimpleTestCase {
                 .flatMap(val -> Result.ofObj(str, "str"));
 
         assertTrue(re.getIsSuccess());
-        assertEquals(str, re.getUnsafe());
+        assertEquals(str, ResultUnsafe.getUnsafe(re));
     }
 
     public void testFlatMapSomeFailed() throws Exception {
@@ -109,7 +110,7 @@ public class TestResult extends SimpleTestCase {
         Result<String> re = Result.tryAsResult(() -> str);
 
         assertTrue(re.getIsSuccess());
-        assertEquals(str, re.getUnsafe());
+        assertEquals(str, ResultUnsafe.getUnsafe(re));
     }
 
 

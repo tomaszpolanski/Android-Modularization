@@ -7,6 +7,7 @@ import com.tomaszpolanski.androidsandbox.utils.SimpleTestCase;
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
 import com.tomaszpolanski.androidsandbox.utils.option.OptionUnsafe;
 import com.tomaszpolanski.androidsandbox.utils.result.Result;
+import com.tomaszpolanski.androidsandbox.utils.result.ResultUnsafe;
 
 public class TestOption extends SimpleTestCase {
 
@@ -163,7 +164,7 @@ public class TestOption extends SimpleTestCase {
                 .toResult(new ArgumentError("Invalid args"));
 
         assertTrue(re.getIsSuccess());
-        assertEquals(str, re.getUnsafe());
+        assertEquals(str, ResultUnsafe.getUnsafe(re));
     }
 
     public void testToResultNone() throws Exception {
@@ -173,7 +174,7 @@ public class TestOption extends SimpleTestCase {
                 .toResult(new ArgumentError(error));
 
         assertFalse(re.getIsSuccess());
-        assertEquals(error, re.getMessage().getMessage());
+        assertEquals(error, ResultUnsafe.getFailure(re).getMessage());
     }
 
 

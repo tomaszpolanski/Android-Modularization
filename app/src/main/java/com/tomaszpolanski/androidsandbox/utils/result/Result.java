@@ -30,10 +30,10 @@ public abstract class Result<A> {
     public abstract boolean isSuccess();
 
     @NonNull
-    public abstract ResultError getMessage();
+    abstract ResultError getMessage();
 
     @NonNull
-    public abstract A getUnsafe();
+    abstract A getUnsafe();
 
     @NonNull
     public abstract Result<A> or(@NonNull final Func0<Result<A>> f);

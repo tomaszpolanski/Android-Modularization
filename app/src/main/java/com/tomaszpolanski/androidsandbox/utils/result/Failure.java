@@ -2,7 +2,6 @@ package com.tomaszpolanski.androidsandbox.utils.result;
 
 import android.support.annotation.NonNull;
 
-import com.android.internal.util.Predicate;
 import com.tomaszpolanski.androidsandbox.models.Errors.ResultError;
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
 
@@ -13,10 +12,10 @@ import rx.functions.Func2;
 public final class Failure<A> extends Result<A> {
 
     @NonNull
-    private final ResultError mFailureMessage;
+    private final ResultError mFailure;
 
     Failure(@NonNull final ResultError value) {
-        mFailureMessage = value;
+        mFailure = value;
     }
 
     @Override
@@ -27,20 +26,20 @@ public final class Failure<A> extends Result<A> {
     @NonNull
     @Override
     public <OUT> Result<OUT> map(@NonNull final Func1<A, OUT> f) {
-        return failure(this.mFailureMessage);
+        return failure(mFailure);
     }
 
     @NonNull
     @Override
     public <OUT> Result<OUT> flatMap(@NonNull final Func1<A, Result<OUT>> f) {
-        return failure(this.mFailureMessage);
+        return failure(mFailure);
     }
 
     @NonNull
     @Override
     public Result<A> filter(@NonNull final Func1<A, Boolean> predicate,
                             @NonNull final Func1<A, ResultError> failMessage) {
-        return failure(this.mFailureMessage);
+        return failure(mFailure);
     }
 
     @Override
@@ -50,13 +49,13 @@ public final class Failure<A> extends Result<A> {
 
     @NonNull
     @Override
-    public ResultError getMessage() {
-        return mFailureMessage;
+    ResultError getMessage() {
+        return mFailure;
     }
 
     @NonNull
     @Override
-    public A getUnsafe() {
+    A getUnsafe() {
         throw new IllegalStateException();
     }
 

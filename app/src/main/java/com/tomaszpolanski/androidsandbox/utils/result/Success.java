@@ -49,13 +49,13 @@ public final class Success<A> extends Result<A> {
 
     @NonNull
     @Override
-    public ResultError getMessage() {
+    ResultError getMessage() {
         throw new IllegalStateException();
     }
 
     @NonNull
     @Override
-    public A getUnsafe() {
+    A getUnsafe() {
         return mValue;
     }
 
