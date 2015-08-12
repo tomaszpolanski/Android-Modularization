@@ -144,7 +144,7 @@ public abstract class Option<T> {
 
 
     /**
-     * Matches current optional to Some or None and returns unit
+     * Matches current option to Some or None and returns unit
      *
      * @param fSome Action that will be called if value exists
      * @param fNone Action that will be called if value does not exist

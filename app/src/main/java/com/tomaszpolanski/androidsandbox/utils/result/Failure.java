@@ -1,10 +1,14 @@
 package com.tomaszpolanski.androidsandbox.utils.result;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.tomaszpolanski.androidsandbox.models.Errors.ResultError;
+import com.tomaszpolanski.androidsandbox.utils.Unit;
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
 
+import rx.functions.Action0;
+import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.functions.Func2;
@@ -66,10 +70,24 @@ public final class Failure<A> extends Result<A> {
         return Option.NONE;
     }
 
+    @Nullable
+    @Override
+    public <OUT> OUT matchUnsafe(@NonNull final  Func1<A, OUT> fSuccess,
+                                 @NonNull final  Func1<? super ResultError, OUT> fFailure) {
+        return fFailure.call(mFailure);
+    }
+
     @Override
     public <OUT> OUT match(@NonNull final Func1<A, OUT> fSuccess,
-                           @NonNull final Func0<OUT> fFailure) {
-        return fFailure.call();
+                           @NonNull final Func1<? super ResultError, OUT> fFailure) {
+        return fFailure.call(mFailure);
+    }
+
+    @NonNull
+    @Override
+    public Unit matchAction(@NonNull final Action1<A> fSuccess,
+                            @NonNull final Action1<? super ResultError> fFailure) {
+        return Unit.asUnit(() -> fFailure.call(mFailure));
     }
 
     @NonNull

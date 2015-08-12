@@ -6,14 +6,17 @@ import android.support.annotation.Nullable;
 import com.tomaszpolanski.androidsandbox.models.Errors.ExceptionError;
 import com.tomaszpolanski.androidsandbox.models.Errors.NullError;
 import com.tomaszpolanski.androidsandbox.models.Errors.ResultError;
+import com.tomaszpolanski.androidsandbox.utils.Unit;
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
 import com.tomaszpolanski.androidsandbox.utils.option.OptionUnsafe;
 
+import rx.functions.Action0;
+import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.functions.Func2;
 
-public abstract class Result<A> {
+public abstract class Result<T> {
 
     /**
      * Indicates if result contains value
@@ -29,7 +32,7 @@ public abstract class Result<A> {
      * @return If value exists, returns converted value otherwise does nothing
      */
     @NonNull
-    public abstract <OUT> Result<OUT> map(@NonNull final Func1<A, OUT> selector);
+    public abstract <OUT> Result<OUT> map(@NonNull final Func1<T, OUT> selector);
 
     /**
      * Binds result to another result
@@ -38,7 +41,7 @@ public abstract class Result<A> {
      * @return Bound result
      */
     @NonNull
-    public abstract <OUT> Result<OUT> flatMap(@NonNull final Func1<A, Result<OUT>> selector);
+    public abstract <OUT> Result<OUT> flatMap(@NonNull final Func1<T, Result<OUT>> selector);
 
     /**
      * Filters results fulfilling given @predicate
@@ -48,8 +51,8 @@ public abstract class Result<A> {
      * @return Success if the value checks the condition, otherwise Failure
      */
     @NonNull
-    public abstract Result<A> filter(@NonNull final Func1<A, Boolean> predicate,
-                                     @NonNull final Func1<A, ResultError> failMessage);
+    public abstract Result<T> filter(@NonNull final Func1<T, Boolean> predicate,
+                                     @NonNull final Func1<T, ResultError> failMessage);
 
     /**
      * ATTENTION: Only use it when you know what you are doing!
@@ -70,7 +73,7 @@ public abstract class Result<A> {
      * @throws IllegalStateException
      */
     @NonNull
-    abstract A getUnsafe();
+    abstract T getUnsafe();
 
     /**
      * Returns result if current value is Failure
@@ -79,7 +82,7 @@ public abstract class Result<A> {
      * @return Result given by the function if current is Failure, otherwise returns current one
      */
     @NonNull
-    public abstract Result<A> orResult(@NonNull final Func0<Result<A>> f);
+    public abstract Result<T> orResult(@NonNull final Func0<Result<T>> f);
 
     /**
      * Returns new Failure with @failure error
@@ -139,7 +142,7 @@ public abstract class Result<A> {
      * @return Some if the option is of Success, otherwise None
      */
     @NonNull
-    public abstract Option<A> toOption();
+    public abstract Option<T> toOption();
 
     /**
      * Result of value returned by the function
@@ -165,8 +168,30 @@ public abstract class Result<A> {
      * @return Value returned by either @fSuccess of @fFailure
      */
     @Nullable
-    public abstract <OUT> OUT match(@NonNull final Func1<A, OUT> fSuccess,
-                                    @NonNull final Func0<OUT> fFailure);
+    public abstract <OUT> OUT match(@NonNull final Func1<T, OUT> fSuccess,
+                                    @NonNull final Func1<? super ResultError, OUT>  fFailure);
+
+    /**
+     * Matches current optional to Some or None and returns unit
+     *
+     * @param fSuccess Action that will be called if value exists
+     * @param fFailure Action that will be called if value does not exist
+     * @return Unit
+     */
+    @NonNull
+    public abstract Unit matchAction(@NonNull final Action1<T> fSuccess,
+                                     @NonNull final Action1<? super ResultError> fFailure);
+
+    /**
+     * Matches current optional to Success or Failure and returns appropriate value
+     *
+     * @param fSuccess Function that will be called if value exists
+     * @param fFailure Function that will be called if value does not exist
+     * @return Value returned by either @fSuccess of @fFailure
+     */
+    @Nullable
+    public abstract <OUT> OUT matchUnsafe(@NonNull final Func1<T, OUT> fSuccess,
+                                          @NonNull final Func1<? super ResultError, OUT> fFailure);
 
     /**
      * Combines given Options using @f
@@ -177,7 +202,7 @@ public abstract class Result<A> {
      */
     @NonNull
     public abstract <IN, OUT> Result<OUT> lift(@NonNull final Result<IN> resultIn,
-                                               @NonNull final Func2<A, IN, OUT> f);
+                                               @NonNull final Func2<T, IN, OUT> f);
 
     /**
      * Identity function
@@ -185,7 +210,7 @@ public abstract class Result<A> {
      * @return Current result
      */
     @NonNull
-    public Result<A> id() {
+    public Result<T> id() {
         return this;
     }
 }
