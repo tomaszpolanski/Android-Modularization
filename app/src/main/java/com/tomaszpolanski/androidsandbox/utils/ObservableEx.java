@@ -5,7 +5,9 @@ import android.support.annotation.NonNull;
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
 import com.tomaszpolanski.androidsandbox.utils.option.OptionUnsafe;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import rx.Observable;
 import rx.functions.Func1;
@@ -44,5 +46,17 @@ public final class ObservableEx {
     @NonNull
     public static <T> Option<? super T> last(@NonNull final Observable<T> observable) {
         return Option.tryAsOption(observable::last);
+    }
+
+    @NonNull
+    public static <T> Option<Observable<T>> sequenceOption(@NonNull final Observable<Option<T>> observable) {
+        return observable.reduce(
+                Option.ofObj(Observable.<T>empty()),
+                (observableOption, tOption) ->
+                        tOption.flatMap(t ->
+                                observableOption.map(tObservable ->
+                                        tObservable.concatWith(Observable.just(t)))))
+                .toBlocking()
+                .first();
     }
 }

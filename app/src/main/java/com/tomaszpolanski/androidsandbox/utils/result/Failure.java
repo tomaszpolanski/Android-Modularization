@@ -42,7 +42,7 @@ public final class Failure<A> extends Result<A> {
     @NonNull
     @Override
     public Result<A> filter(@NonNull final Func1<A, Boolean> predicate,
-                            @NonNull final Func1<A, ? super ResultError> failMessage) {
+                            @NonNull final Func1<A, ResultError> failMessage) {
         return this;
     }
 
