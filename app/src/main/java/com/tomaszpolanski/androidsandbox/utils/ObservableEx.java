@@ -49,14 +49,21 @@ public final class ObservableEx {
     }
 
     @NonNull
-    public static <T> Option<Observable<T>> sequenceOption(@NonNull final Observable<Option<T>> observable) {
+    public static <IN, OUT> Option<Observable<OUT>> traverseOption(@NonNull final Observable<IN> observable,
+                                                                   @NonNull final Func1<IN, Option<OUT>> selector) {
         return observable.reduce(
-                Option.ofObj(Observable.<T>empty()),
-                (observableOption, tOption) ->
-                        tOption.flatMap(t ->
-                                observableOption.map(tObservable ->
-                                        tObservable.concatWith(Observable.just(t)))))
+                Option.ofObj(Observable.<OUT>empty()),
+                (observableOption, in) ->
+                        selector.call(in)
+                                .flatMap(t ->
+                                        observableOption.map(tObservable ->
+                                                tObservable.concatWith(Observable.just(t)))))
                 .toBlocking()
                 .first();
+    }
+
+    @NonNull
+    public static <T> Option<Observable<T>> sequenceOption(@NonNull final Observable<Option<T>> observable) {
+        return traverseOption(observable, Option::id);
     }
 }
