@@ -5,6 +5,7 @@ import com.tomaszpolanski.androidsandbox.models.Errors.NullError;
 import com.tomaszpolanski.androidsandbox.models.Errors.detail.ArgumentError;
 import com.tomaszpolanski.androidsandbox.utils.SimpleTestCase;
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
+import com.tomaszpolanski.androidsandbox.utils.option.OptionUnsafe;
 import com.tomaszpolanski.androidsandbox.utils.result.Result;
 
 public class TestResult extends SimpleTestCase {
@@ -126,7 +127,7 @@ public class TestResult extends SimpleTestCase {
                 .toOption();
 
         assertTrue(op.getIsSome());
-        assertEquals(str, op.getUnsafe());
+        assertEquals(str, OptionUnsafe.getUnsafe(op));
     }
 
     public void testToOptionFailure() throws Exception {

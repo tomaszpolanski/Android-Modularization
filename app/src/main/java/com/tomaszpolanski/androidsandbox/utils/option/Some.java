@@ -69,7 +69,7 @@ public final class Some<T> extends Option<T> {
 
     @NonNull
     @Override
-    public T getUnsafe() {
+    T getUnsafe() {
         return mValue;
     }
 
@@ -79,18 +79,24 @@ public final class Some<T> extends Option<T> {
         return type.isInstance(mValue) ? Option.ofObj(type.cast(mValue)) : Option.NONE;
     }
 
-    @Nullable
+    @NonNull
     @Override
     public <OUT> OUT match(@NonNull final Func1<T, OUT> fSome,
                            @NonNull final Func0<OUT> fNone) {
         return fSome.call(mValue);
     }
 
-    @Nullable
+    @NonNull
     @Override
     public Unit match(@NonNull final Action1<T> fSome,
                       @NonNull final Action0 fNone) {
         return Unit.asUnit(() -> fSome.call(mValue));
+    }
+
+    @Nullable
+    @Override
+    public <OUT> OUT matchUnsafe(@NonNull Func1<T, OUT> fSome, @NonNull Func0<OUT> fNone) {
+        return fSome.call(mValue);
     }
 
     @NonNull

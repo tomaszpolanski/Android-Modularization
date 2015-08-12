@@ -3,6 +3,7 @@ package com.tomaszpolanski.androidsandbox.utils;
 import android.support.annotation.NonNull;
 
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
+import com.tomaszpolanski.androidsandbox.utils.option.OptionUnsafe;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public final class ObservableEx {
                                                    @NonNull final Func1<IN, Option<OUT>> selector) {
         return observable.map(selector)
                 .filter(Option::getIsSome)
-                .map(Option::getUnsafe);
+                .map(OptionUnsafe::getUnsafe);
     }
 
     @NonNull

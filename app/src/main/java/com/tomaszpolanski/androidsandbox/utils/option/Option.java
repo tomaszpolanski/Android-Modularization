@@ -93,7 +93,7 @@ public abstract class Option<T> {
      * @throws IllegalStateException
      */
     @NonNull
-    public abstract T getUnsafe();
+    abstract T getUnsafe();
 
     /**
      * Casts the inner value to given type
@@ -138,7 +138,7 @@ public abstract class Option<T> {
      * @param fNone Function that will be called if value does not exist
      * @return Value returned by either @fSome of @fNone
      */
-    @Nullable
+    @NonNull
     public abstract <OUT> OUT match(@NonNull final Func1<T, OUT> fSome,
                                     @NonNull final Func0<OUT> fNone);
 
@@ -150,9 +150,21 @@ public abstract class Option<T> {
      * @param fNone Action that will be called if value does not exist
      * @return Unit
      */
-    @Nullable
+    @NonNull
     public abstract Unit match(@NonNull final Action1<T> fSome,
                                @NonNull final Action0 fNone);
+
+    /**
+     * Matches current optional to Some or None and returns appropriate value
+     *
+     * @param fSome Function that will be called if value exists
+     * @param fNone Function that will be called if value does not exist
+     * @return Value returned by either @fSome of @fNone
+     */
+    @Nullable
+    public abstract <OUT> OUT matchUnsafe(@NonNull final Func1<T, OUT> fSome,
+                                          @NonNull final Func0<OUT> fNone);
+
 
     /**
      * Identity function

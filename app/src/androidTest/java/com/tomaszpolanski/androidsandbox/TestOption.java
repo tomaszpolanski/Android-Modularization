@@ -5,6 +5,7 @@ package com.tomaszpolanski.androidsandbox;
 import com.tomaszpolanski.androidsandbox.models.Errors.detail.ArgumentError;
 import com.tomaszpolanski.androidsandbox.utils.SimpleTestCase;
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
+import com.tomaszpolanski.androidsandbox.utils.option.OptionUnsafe;
 import com.tomaszpolanski.androidsandbox.utils.result.Result;
 
 public class TestOption extends SimpleTestCase {
@@ -16,7 +17,7 @@ public class TestOption extends SimpleTestCase {
         Option<String> op = Option.ofObj(str);
 
         assertTrue(op.getIsSome());
-        assertEquals(str, op.getUnsafe());
+        assertEquals(str, OptionUnsafe.getUnsafe(op));
     }
 
     public void testOfObjNone() throws Exception {
@@ -34,7 +35,7 @@ public class TestOption extends SimpleTestCase {
                 .map(__ -> str);
 
         assertTrue(op.getIsSome());
-        assertEquals(str, op.getUnsafe());
+        assertEquals(str, OptionUnsafe.getUnsafe(op));
     }
 
     public void testMapNone() throws Exception {
@@ -53,7 +54,7 @@ public class TestOption extends SimpleTestCase {
                 .filter(val -> val.equals(str));
 
         assertTrue(op.getIsSome());
-        assertEquals(str, op.getUnsafe());
+        assertEquals(str, OptionUnsafe.getUnsafe(op));
     }
 
     public void testFilterSomeFailed() throws Exception {
@@ -80,7 +81,7 @@ public class TestOption extends SimpleTestCase {
                 .flatMap(val -> Option.ofObj(str));
 
         assertTrue(op.getIsSome());
-        assertEquals(str, op.getUnsafe());
+        assertEquals(str, OptionUnsafe.getUnsafe(op));
     }
 
     public void testFlatMapSomeFailed() throws Exception {
@@ -107,7 +108,7 @@ public class TestOption extends SimpleTestCase {
                 .orOption(() -> Option.ofObj(""));
 
         assertTrue(op.getIsSome());
-        assertEquals(str, op.getUnsafe());
+        assertEquals(str, OptionUnsafe.getUnsafe(op));
     }
 
 
@@ -117,7 +118,7 @@ public class TestOption extends SimpleTestCase {
                 .orOption(() -> Option.ofObj(str));
 
         assertTrue(op.getIsSome());
-        assertEquals(str, op.getUnsafe());
+        assertEquals(str, OptionUnsafe.getUnsafe(op));
     }
 
     public void testOrDefaultSome() throws Exception {
@@ -145,7 +146,7 @@ public class TestOption extends SimpleTestCase {
         Option<String> op = Option.tryAsOption(() -> str);
 
         assertTrue(op.getIsSome());
-        assertEquals(str, op.getUnsafe());
+        assertEquals(str, OptionUnsafe.getUnsafe(op));
     }
 
 

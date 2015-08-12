@@ -63,7 +63,7 @@ public final class None<T> extends Option<T> {
 
     @NonNull
     @Override
-    public T getUnsafe() {
+    T getUnsafe() {
         throw new IllegalStateException();
     }
 
@@ -73,17 +73,23 @@ public final class None<T> extends Option<T> {
         return NONE;
     }
 
-    @Nullable
+    @NonNull
     @Override
     public <OUT> OUT match(@NonNull Func1<T, OUT> fSome,
                            @NonNull Func0<OUT> fNone) {
         return fNone.call();
     }
 
-    @Nullable
+    @NonNull
     @Override
     public Unit match(@NonNull Action1<T> fSome, @NonNull Action0 fNone) {
         return Unit.asUnit(fNone);
+    }
+
+    @Nullable
+    @Override
+    public <OUT> OUT matchUnsafe(@NonNull Func1<T, OUT> fSome, @NonNull Func0<OUT> fNone) {
+        return fNone.call();
     }
 
     @NonNull

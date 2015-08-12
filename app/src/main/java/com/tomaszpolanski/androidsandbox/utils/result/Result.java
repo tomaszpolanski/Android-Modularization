@@ -7,6 +7,7 @@ import com.tomaszpolanski.androidsandbox.models.Errors.ExceptionError;
 import com.tomaszpolanski.androidsandbox.models.Errors.NullError;
 import com.tomaszpolanski.androidsandbox.models.Errors.ResultError;
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
+import com.tomaszpolanski.androidsandbox.utils.option.OptionUnsafe;
 
 import rx.functions.Func0;
 import rx.functions.Func1;
@@ -62,7 +63,7 @@ public abstract class Result<A> {
     @NonNull
     public static <A> Result<A> ofOption(@NonNull final Option<A> value,
                                          @NonNull final ResultError failMessage) {
-        return value != Option.NONE ? success(value.getUnsafe()) : failure(failMessage);
+        return value != Option.NONE ? success(OptionUnsafe.getUnsafe(value)) : failure(failMessage);
     }
 
     @NonNull

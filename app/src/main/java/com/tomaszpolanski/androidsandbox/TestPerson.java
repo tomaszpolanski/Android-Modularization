@@ -4,6 +4,7 @@ import com.tomaszpolanski.androidsandbox.models.Person;
 import com.tomaszpolanski.androidsandbox.models.PersonDetails;
 import com.tomaszpolanski.androidsandbox.utils.Unit;
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
+import com.tomaszpolanski.androidsandbox.utils.option.OptionUnsafe;
 
 import rx.functions.Action1;
 
@@ -17,7 +18,7 @@ public class TestPerson {
         Option<Person> personOption = Person.create(name);
 
         if (personOption != Option.NONE) {
-            Person person = personOption.getUnsafe();
+            Person person = OptionUnsafe.getUnsafe(personOption);
             print("Person exits: ", person);
         } else {
             System.console().printf("Was not able to just person with name: " + name);
@@ -30,7 +31,7 @@ public class TestPerson {
                                           .filter(personName -> personName.equals("John"));
 
         if (johnOption != Option.NONE) {
-            Person person = johnOption.getUnsafe();
+            Person person = OptionUnsafe.getUnsafe(johnOption);
             print("Hi John! ", person);
         } else {
             System.console().printf("That's not John: " + name);

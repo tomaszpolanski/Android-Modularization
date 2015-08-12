@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.tomaszpolanski.androidsandbox.utils.option.Option;
+import com.tomaszpolanski.androidsandbox.utils.option.OptionUnsafe;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -508,7 +509,7 @@ public class Linq<T> extends ArrayList<T> {
                                         @NonNull final Func1<T, Option<R>> selector) {
         return Linq.map(source, selector::call)
                    .filter(Option::getIsSome)
-                   .map(Option::getUnsafe);
+                   .map(OptionUnsafe::getUnsafe);
     }
 
     /**
@@ -521,7 +522,7 @@ public class Linq<T> extends ArrayList<T> {
     public <R> Linq<R> choose(@NonNull final Func1<T, Option<R>> selector) {
         return map(selector::call)
                 .filter(Option::getIsSome)
-                .map(Option::getUnsafe);
+                .map(OptionUnsafe::getUnsafe);
     }
 
     @Override
