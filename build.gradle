@@ -1,16 +1,27 @@
-
-buildscript {
-    repositories {
-        jcenter()
+def getLocalRepository() {
+    String androidHome = System.getenv().get("ANDROID_HOME")
+    if (androidHome == null) {
+        throw new StopActionException("System env does not contain ANDROID_HOME. " +
+                "Set it to point to your Android SDK.")
     }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.2'
-
-    }
+    return androidHome + "/extras/android/m2repository"
 }
 
 allprojects {
     repositories {
-        jcenter()
+        mavenLocal()
+        mavenCentral()
+        maven { url getLocalRepository() }
+    }
+    buildscript {
+        dependencies {
+            classpath 'com.android.tools.build:gradle:2.2.0-alpha5'
+            classpath 'me.tatarka:gradle-retrolambda:3.2.5'
+        }
+        repositories {
+            mavenLocal()
+            mavenCentral()
+            maven { url getLocalRepository() }
+        }
     }
 }

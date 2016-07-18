@@ -1,0 +1,6 @@
+dependencies {
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.jooq:joor:0.9.5'
+    testCompile 'org.mockito:mockito-core:2.0.7-beta'
+    testCompile 'org.assertj:assertj-core:1.7.1'
+}

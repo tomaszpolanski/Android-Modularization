@@ -1,0 +1,15 @@
+apply plugin: 'me.tatarka.retrolambda'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+def getJavaPath() {
+    return System.getenv("JAVA8_HOME") ?: System.getenv("JAVA_HOME")
+}
+
+retrolambda {
+    jvmArgs '-noverify'
+    jdk getJavaPath()
+    oldJdk getJavaPath()
+}
+

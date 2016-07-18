@@ -1,0 +1,10 @@
+apply plugin: 'java'
+apply from: '../retrolambda.gradle'
+apply from: '../java-test.gradle'
+
+dependencies {
+    compile 'com.android.support:support-annotations:23.3.0'
+    compile 'io.reactivex:rxjava:1.1.0'
+
+    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.3.0'
+}
