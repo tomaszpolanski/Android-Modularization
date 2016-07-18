@@ -1,0 +1,7 @@
+apply plugin: 'java'
+apply from: '../retrolambda.gradle'
+apply from: '../java-test.gradle'
+
+dependencies {
+    compile project(':common')
+}
