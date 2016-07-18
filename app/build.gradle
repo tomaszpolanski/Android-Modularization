@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '24.0.0'
+    buildToolsVersion '24'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -26,11 +26,17 @@ android {
         }
     }
 }
+buildscript {
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.2.0-alpha5'
+        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
+    }
+}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':common')
-    testCompile project(':common')
+    testCompile project(':commontest')
 
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'

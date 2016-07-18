@@ -1,9 +1,21 @@
 apply plugin: 'com.android.library'
 apply from: '../java-test.gradle'
+apply from: '../retrolambda.gradle'
 
+buildscript {
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
+    }
+}
 android {
     compileSdkVersion 23
-    buildToolsVersion "24.0.0"
+    buildToolsVersion '24'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     defaultConfig {
         minSdkVersion 19
@@ -25,4 +37,11 @@ android {
 dependencies {
     compile project(':common')
     testCompile project(path: ':commontest')
+
+    compile "com.google.auto.value:auto-value:1.2"
+
+    androidTestCompile 'com.android.support.test:runner:0.3'
+    androidTestCompile 'org.mockito:mockito-core:2.0.7-beta'
+    androidTestCompile 'org.assertj:assertj-core:1.7.1'
+    androidTestCompile 'junit:junit:4.12'
 }
