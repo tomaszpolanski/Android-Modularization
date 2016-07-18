@@ -12,6 +12,7 @@ allprojects {
         mavenLocal()
         mavenCentral()
         maven { url getLocalRepository() }
+        maven { url "https://jitpack.io" }
     }
     buildscript {
         dependencies {
@@ -21,7 +22,6 @@ allprojects {
         repositories {
             mavenLocal()
             mavenCentral()
-            maven { url getLocalRepository() }
         }
     }
 }

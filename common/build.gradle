@@ -5,6 +5,7 @@ apply from: '../java-test.gradle'
 dependencies {
     compile 'com.android.support:support-annotations:23.3.0'
     compile 'io.reactivex:rxjava:1.1.0'
+    compile 'com.github.tomaszpolanski:options:1.2.0'
 
     retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.3.0'
 }
