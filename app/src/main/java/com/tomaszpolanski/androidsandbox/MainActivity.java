@@ -1,5 +1,8 @@
 package com.tomaszpolanski.androidsandbox;
 
+import com.tomaszpolanski.androidsandbox.providers.IResourceProvider;
+import com.tomaszpolanski.androidsandbox.providers.ResourceProvider;
+
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -23,6 +26,11 @@ public class MainActivity extends AppCompatActivity {
         fab.ifSome(button ->
                 button.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show()));
+
+        IResourceProvider rp = new ResourceProvider(getApplicationContext());
+
+        String test = rp.getString(R.string.app_name_providers);
+        String test2 = rp.getString(R.string.app_name);
     }
 
 }

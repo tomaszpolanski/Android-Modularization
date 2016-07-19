@@ -16,6 +16,8 @@ allprojects {
     }
     buildscript {
         dependencies {
+            classpath 'com.android.tools.build:gradle:2.2.0-alpha6'
+            classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8' // needed for AutoValue
             classpath 'me.tatarka:gradle-retrolambda:3.2.5'
         }
         repositories {

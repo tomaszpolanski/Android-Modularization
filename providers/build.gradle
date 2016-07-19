@@ -1,0 +1,43 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.neenbedankt.android-apt' // needed for AutoValue
+apply from: '../java-test.gradle'
+apply from: '../retrolambda.gradle'
+
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion '24'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    // Fixes issue: com.android.build.api.transform.TransformException:
+    // com.android.builder.packaging.DuplicateFileException: Duplicate files copied in APK asm-license.txt
+    packagingOptions {
+        exclude 'asm-license.txt'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile project(':common')
+    compile project(':commonandroid')
+    testCompile project(path: ':commontest')
+
+}
