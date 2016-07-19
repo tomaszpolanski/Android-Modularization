@@ -26,12 +26,6 @@ android {
         }
     }
 }
-buildscript {
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0-alpha5'
-        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
-    }
-}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])

@@ -1,13 +1,9 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.neenbedankt.android-apt' // needed for AutoValue
 apply from: '../java-test.gradle'
 apply from: '../retrolambda.gradle'
 
-buildscript {
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.2'
-        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
-    }
-}
+
 android {
     compileSdkVersion 23
     buildToolsVersion '24'
@@ -25,6 +21,11 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    // Fixes issue: com.android.build.api.transform.TransformException:
+    // com.android.builder.packaging.DuplicateFileException: Duplicate files copied in APK asm-license.txt
+    packagingOptions {
+        exclude 'asm-license.txt'
+    }
 
     buildTypes {
         release {
@@ -38,7 +39,11 @@ dependencies {
     compile project(':common')
     testCompile project(path: ':commontest')
 
-    compile "com.google.auto.value:auto-value:1.2"
+    provided 'com.google.auto.value:auto-value:1.2'
+    apt 'com.google.auto.value:auto-value:1.2'
+
+    androidTestCompile 'com.google.dexmaker:dexmaker:1.2' // to fix ExceptionInInitializerError issue in mockito
+    androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2'
 
     androidTestCompile 'com.android.support.test:runner:0.3'
     androidTestCompile 'org.mockito:mockito-core:2.0.7-beta'
