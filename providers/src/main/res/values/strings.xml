@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name_providers">Providers</string>
+    <string name="popup">This is a Snackbar</string>
 </resources>
