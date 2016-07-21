@@ -4,14 +4,10 @@ import android.app.Application;
 
 import toothpick.Configuration;
 import toothpick.Scope;
-import toothpick.registries.FactoryRegistryLocator;
-import toothpick.registries.MemberInjectorRegistryLocator;
-import toothpick.smoothie.FactoryRegistry;
-import toothpick.smoothie.MemberInjectorRegistry;
-import toothpick.smoothie.module.SmoothieApplicationModule;
 import toothpick.Toothpick;
 import toothpick.registries.FactoryRegistryLocator;
 import toothpick.registries.MemberInjectorRegistryLocator;
+import toothpick.smoothie.module.SmoothieApplicationModule;
 
 public class SandboxApplication extends Application {
 

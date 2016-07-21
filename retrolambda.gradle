@@ -4,12 +4,17 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 def getJavaPath() {
-    return System.getenv("JAVA8_HOME") ?: System.getenv("JAVA_HOME")
+    return System.getenv("JAVA8_HOME") ?: System.getenv("JAVA_HOME") ?: ""
 }
 
 retrolambda {
     jvmArgs '-noverify'
-    jdk getJavaPath()
-    oldJdk getJavaPath()
+    // Fixing issue on MacOs where the JAVA_HOME var is not found
+    // In that case just keep the jdk as it was
+    String javaPath = getJavaPath()
+    if (!javaPath.isEmpty()) {
+        jdk javaPath
+        oldJdk javaPath
+    }
 }
 
