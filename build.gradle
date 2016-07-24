@@ -11,12 +11,13 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
+        jcenter()
         maven { url getLocalRepository() }
         maven { url "https://jitpack.io" }
     }
     buildscript {
         dependencies {
-            classpath 'com.android.tools.build:gradle:2.2.0-alpha6'
+            classpath 'com.android.tools.build:gradle:2.1.2'
             classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8' // needed for AutoValue
             classpath 'me.tatarka:gradle-retrolambda:3.2.5'
         }
@@ -26,4 +27,3 @@ allprojects {
         }
     }
 }
-
