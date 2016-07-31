@@ -1,7 +1,9 @@
 package com.tomaszpolanski.androidsandbox;
 
 import com.tomaszpolanski.androidsandbox.injection.ActivityModule;
+import com.tomaszpolanski.androidsandbox.providers.INavigator;
 import com.tomaszpolanski.androidsandbox.providers.IResourceProvider;
+import com.tomaszpolanski.androidsandbox.providers.Navigator;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         final Activity self = this;
-
+        INavigator nav = new Navigator(this);
         Option<FloatingActionButton> fab = Option.ofObj(findViewById(R.id.fab))
                                                  .ofType(FloatingActionButton.class);
 
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                       get(mResourceProvider).getString(R.string.popup),
                       Snackbar.LENGTH_LONG)
                 .setAction("Start", v -> {
-                    startActivity(new Intent(this, SecondaryFeatureActivity.class));
+                    startActivity(new Intent(this, ThirdActivity.class));
                 })
                 .show()));
     }

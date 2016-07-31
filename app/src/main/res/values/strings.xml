@@ -6,5 +6,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_main">Main</string>
     <string name="title_activity_secondary_feature">SecondaryFeatureActivity</string>
+    <string name="title_activity_third">ThirdActivity</string>
 
 </resources>

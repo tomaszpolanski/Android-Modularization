@@ -57,7 +57,9 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':common')
     compile project(':providers')
+    compile project(':commonlayout')
     compile project(':featuresecond')
+    compile project(':featurethird')
 
     testCompile project(':commontest')
 

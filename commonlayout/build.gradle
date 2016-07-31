@@ -37,8 +37,6 @@ android {
 
 dependencies {
     compile project(':common')
-    compile project(':commonandroid')
-    compile project(':commonlayout')
     testCompile project(path: ':commontest')
 
     compile 'com.android.support:appcompat-v7:23.4.0'
