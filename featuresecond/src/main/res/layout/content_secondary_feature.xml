@@ -6,6 +6,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:showIn="@layout/activity_secondary_feature"
-        tools:context="com.tomaszpolanski.androidsandbox.SecondaryFeatureActivity">
+        tools:context="com.tomaszpolanski.androidsandbox.SecondActivity">
 
 </android.support.constraint.ConstraintLayout>

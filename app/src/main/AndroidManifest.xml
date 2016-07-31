@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".SecondaryFeatureActivity"
+                android:name=".SecondActivity"
                 android:label="@string/title_activity_secondary_feature"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
