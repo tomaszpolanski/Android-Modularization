@@ -1,3 +1,4 @@
 include ':app', ':common', ':commontest', ':commonandroid', ':providers', ':featuresecond',
+        ':injection',
         ':commonlayout',
         ':featurethird'

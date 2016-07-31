@@ -35,10 +35,17 @@ android {
     }
 }
 
+apt {
+    arguments {
+        'toothpick_registry_package_name' 'com.tomaszpolanski.androidsandbox'
+    }
+}
+
 dependencies {
     compile project(':common')
     compile project(':commonandroid')
     compile project(':commonlayout')
+    compile project(path: ':injection')
     testCompile project(path: ':commontest')
 
     compile 'com.android.support:appcompat-v7:23.4.0'

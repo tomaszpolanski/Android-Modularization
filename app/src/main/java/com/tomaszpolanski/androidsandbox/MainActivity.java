@@ -37,8 +37,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        final Activity self = this;
-        INavigator nav = new Navigator(this);
         Option<FloatingActionButton> fab = Option.ofObj(findViewById(R.id.fab))
                                                  .ofType(FloatingActionButton.class);
 
