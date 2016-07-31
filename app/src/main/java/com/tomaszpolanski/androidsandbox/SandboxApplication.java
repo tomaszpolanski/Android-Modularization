@@ -1,25 +1,36 @@
 package com.tomaszpolanski.androidsandbox;
 
-import android.app.Application;
+import com.facebook.stetho.Stetho;
+import com.tomaszpolanski.androidsandbox.injection.app.BaseApplicationModule;
 
-import toothpick.Configuration;
-import toothpick.Scope;
-import toothpick.Toothpick;
-import toothpick.registries.FactoryRegistryLocator;
-import toothpick.registries.MemberInjectorRegistryLocator;
-import toothpick.smoothie.module.SmoothieApplicationModule;
+import android.support.annotation.NonNull;
 
-public class SandboxApplication extends Application {
+public class SandboxApplication extends BaseApplication<SandboxApplicationComponent> {
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Configuration.setConfiguration(Configuration.reflectionFree());
-        MemberInjectorRegistryLocator
-                .setRootRegistry(new com.tomaszpolanski.androidsandbox.MemberInjectorRegistry());
-        FactoryRegistryLocator
-                .setRootRegistry(new com.tomaszpolanski.androidsandbox.FactoryRegistry());
-        Scope appScope = Toothpick.openScope(this);
-        appScope.installModules(new SmoothieApplicationModule(this));
+        initStetho();
+    }
+
+    @Override
+    public void inject() {
+        component().inject(this);
+    }
+
+    @NonNull
+    protected SandboxApplicationComponent createComponent() {
+        return DaggerSandboxApplicationComponent.builder()
+                                                .baseApplicationModule(
+                                                        new BaseApplicationModule(this))
+                                                .build();
+    }
+
+    private void initStetho() {
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                      .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                      .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
+                      .build());
     }
 }

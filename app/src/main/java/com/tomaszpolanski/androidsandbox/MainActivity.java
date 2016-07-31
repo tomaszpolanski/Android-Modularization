@@ -1,6 +1,5 @@
 package com.tomaszpolanski.androidsandbox;
 
-import com.tomaszpolanski.androidsandbox.injection.ActivityModule;
 import com.tomaszpolanski.androidsandbox.providers.INavigator;
 import com.tomaszpolanski.androidsandbox.providers.IResourceProvider;
 import com.tomaszpolanski.androidsandbox.providers.Navigator;
@@ -17,8 +16,6 @@ import android.support.v7.widget.Toolbar;
 import javax.inject.Inject;
 
 import polanski.option.Option;
-import toothpick.Scope;
-import toothpick.Toothpick;
 
 import static com.tomaszpolanski.androidsandbox.common.Preconditions.get;
 
@@ -30,10 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Scope scope = Toothpick.openScopes(getApplication(), this);
-        scope.installModules(new ActivityModule(this));
         super.onCreate(savedInstanceState);
-        Toothpick.inject(this, scope);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
