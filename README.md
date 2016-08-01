@@ -25,5 +25,5 @@ In this app they are only devided by basic activities, but in real app they coul
 - home activity
 - settings activity and it's only dependencies
 - search activity
-- ... and many more
-- 
+- and many more
+
