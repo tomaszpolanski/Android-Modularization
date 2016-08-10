@@ -1,7 +1,7 @@
 package com.tomaszpolanski.androidsandbox;
 
+import com.tomaszpolanski.androidsandbox.injection.activity.BaseActivityModule;
 import com.tomaszpolanski.androidsandbox.injection.app.Application;
-import com.tomaszpolanski.androidsandbox.injection.app.BaseApplicationComponent;
 
 import android.content.Context;
 
@@ -9,14 +9,16 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 
-@Component(modules = ApplicationModule.class)
 @Singleton
-public interface SandboxApplicationComponent extends BaseApplicationComponent {
+@Component(modules = ApplicationModule.class)
+public interface SandboxApplicationComponent extends ISecondFeatureAppComponent {
 
     android.app.Application getApplication();
 
     @Application
     Context getApplicationContext();
+
+    MainActivityComponent plusMainActivity(BaseActivityModule splashActivityModule);
 
     void inject(final SandboxApplication application);
 }

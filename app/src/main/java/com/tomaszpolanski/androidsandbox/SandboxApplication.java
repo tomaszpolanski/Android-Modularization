@@ -1,6 +1,7 @@
 package com.tomaszpolanski.androidsandbox;
 
 import com.facebook.stetho.Stetho;
+import com.tomaszpolanski.androidsandbox.injection.app.BaseApplication;
 import com.tomaszpolanski.androidsandbox.injection.app.BaseApplicationModule;
 
 import android.support.annotation.NonNull;
@@ -33,4 +34,5 @@ public class SandboxApplication extends BaseApplication<SandboxApplicationCompon
                       .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
                       .build());
     }
+
 }

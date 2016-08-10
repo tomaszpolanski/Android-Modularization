@@ -28,7 +28,7 @@ public class ThirdActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                nav.startActivity("com.tomaszpolanski.androidsandbox.SecondaryFeatureActivity");
+                nav.startActivity("com.tomaszpolanski.androidsandbox.SecondActivity");
             }
         });
     }

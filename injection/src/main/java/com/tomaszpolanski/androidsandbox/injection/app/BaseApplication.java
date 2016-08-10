@@ -1,4 +1,4 @@
-package com.tomaszpolanski.androidsandbox;
+package com.tomaszpolanski.androidsandbox.injection.app;
 
 import com.tomaszpolanski.androidsandbox.injection.Injector;
 
