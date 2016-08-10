@@ -11,9 +11,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import javax.inject.Inject;
+
+import static polanski.option.Option.ofObj;
+import static polanski.option.OptionUnsafe.orThrowUnsafe;
 
 public class ThirdActivity extends BaseActivity<ThirdActivityComponent> {
 
@@ -30,16 +32,20 @@ public class ThirdActivity extends BaseActivity<ThirdActivityComponent> {
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(
-                view -> mNavigator.startActivity("com.tomaszpolanski.androidsandbox.SecondActivity"));
+                view -> mNavigator
+                        .startActivity("com.tomaszpolanski.androidsandbox.SecondActivity"));
     }
 
     @NonNull
     @Override
     protected ThirdActivityComponent createComponent() {
-        BaseApplication app = (BaseApplication) getApplication();
-        BaseActivityModule activityModule = new BaseActivityModule(this);
-
-        return ((IThirdFeatureAppComponent) app.component()).plusThirdActivity(activityModule);
+        return orThrowUnsafe(ofObj(getApplication())
+                                     .ofType(BaseApplication.class)
+                                     .map(BaseApplication::component)
+                                     .ofType(IThirdFeatureAppComponent.class)
+                                     .map(it -> it.plusThirdActivity(
+                                             new BaseActivityModule(this))),
+                             new RuntimeException("Cannot inject " + getClass().getSimpleName()));
     }
 
     @Override
