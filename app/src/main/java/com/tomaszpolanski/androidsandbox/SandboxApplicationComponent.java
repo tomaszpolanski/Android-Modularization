@@ -11,7 +11,8 @@ import dagger.Component;
 
 @Singleton
 @Component(modules = ApplicationModule.class)
-public interface SandboxApplicationComponent extends ISecondFeatureAppComponent {
+public interface SandboxApplicationComponent extends ISecondFeatureAppComponent,
+                                                     IThirdFeatureAppComponent{
 
     android.app.Application getApplication();
 

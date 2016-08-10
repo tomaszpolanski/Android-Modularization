@@ -1,19 +1,25 @@
 package com.tomaszpolanski.androidsandbox;
 
-
+import com.tomaszpolanski.androidsandbox.injection.activity.BaseActivity;
+import com.tomaszpolanski.androidsandbox.injection.activity.BaseActivityModule;
+import com.tomaszpolanski.androidsandbox.injection.app.BaseApplication;
 import com.tomaszpolanski.androidsandbox.providers.INavigator;
-import com.tomaszpolanski.androidsandbox.providers.Navigator;
 import com.tomaszpolanski.androidsandbox.third.R;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-public class ThirdActivity extends AppCompatActivity {
+import javax.inject.Inject;
+
+public class ThirdActivity extends BaseActivity<ThirdActivityComponent> {
+
+    @Inject
+    @Nullable
+    INavigator mNavigator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,15 +28,23 @@ public class ThirdActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        INavigator nav = new Navigator(this);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                nav.startActivity("com.tomaszpolanski.androidsandbox.SecondActivity");
-            }
-        });
+        fab.setOnClickListener(
+                view -> mNavigator.startActivity("com.tomaszpolanski.androidsandbox.SecondActivity"));
+    }
+
+    @NonNull
+    @Override
+    protected ThirdActivityComponent createComponent() {
+        BaseApplication app = (BaseApplication) getApplication();
+        BaseActivityModule activityModule = new BaseActivityModule(this);
+
+        return ((IThirdFeatureAppComponent) app.component()).plusThirdActivity(activityModule);
+    }
+
+    @Override
+    public void inject() {
+        component().inject(this);
     }
 
 }
